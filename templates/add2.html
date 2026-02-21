@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Описание - SadoApp</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="/static/add2.css">
+</head>
+<body>
+
+<div class="app" data-post-id="{{ post_id }}">
+
+  <!-- HEADER -->
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">
+      <span class="material-icons-outlined">arrow_back</span>
+    </button>
+    <span class="header-title">Новое объявление</span>
+    <button class="close-btn" onclick="exitPost()">
+      <span class="material-icons-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="progress-step completed">
+      <span class="material-icons-outlined">check</span>
+    </div>
+    <div class="progress-line active"></div>
+    <div class="progress-step active">2</div>
+    <div class="progress-line"></div>
+    <div class="progress-step">3</div>
+    <div class="progress-line"></div>
+    <div class="progress-step">4</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    
+    <div class="step-title">Опишите товар</div>
+    <div class="step-subtitle">Чем подробнее, тем быстрее продадите</div>
+
+    <!-- CATEGORY SECTION -->
+    <div class="section">
+      <label class="field-label">Категория *</label>
+      <button class="selector-btn" id="categoryBtn" onclick="openCategoryModal()">
+        <span class="selector-text">Выберите категорию</span>
+        <span class="material-icons-outlined">chevron_right</span>
+      </button>
+    </div>
+
+    <!-- SUBCATEGORY SECTION (hidden by default) -->
+    <div class="section" id="subcategorySection" style="display: none;">
+      <label class="field-label">Подкатегория *</label>
+      <button class="selector-btn" id="subcategoryBtn" onclick="openSubcategoryModal()">
+        <span class="selector-text">Выберите подкатегорию</span>
+        <span class="material-icons-outlined">chevron_right</span>
+      </button>
+    </div>
+
+    <!-- DYNAMIC FIELDS CONTAINER -->
+    <div id="dynamicFields"></div>
+
+    <!-- TITLE -->
+    <div class="section">
+      <label class="field-label">Название *</label>
+      <input type="text" class="text-input" id="titleInput" 
+             placeholder="Например: iPhone 13 Pro Max 256GB" maxlength="80">
+      <div class="char-counter"><span id="titleCounter">0</span>/80</div>
+    </div>
+
+    <!-- PRICE -->
+    <div class="section">
+      <label class="field-label">Цена</label>
+      <div class="price-row">
+        <input type="number" class="text-input price-input" id="priceInput" placeholder="0">
+        <select class="currency-select" id="currencySelect">
+          <option value="TJS">TJS</option>
+          <option value="USD">USD</option>
+          <option value="RUB">RUB</option>
+        </select>
+      </div>
+      <label class="checkbox-label">
+        <input type="checkbox" id="negotiableCheckbox">
+        <span class="checkmark"></span>
+        <span class="checkbox-text">Договорная цена</span>
+      </label>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="section">
+      <label class="field-label">Описание *</label>
+      <textarea class="text-area" id="descriptionInput" rows="5" 
+                placeholder="Опишите состояние, комплектацию, причину продажи..."></textarea>
+      <div class="char-counter"><span id="descCounter">0</span>/2000</div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <button class="next-btn" id="continueBtn" disabled>
+      Продолжить
+      <span class="material-icons-outlined">arrow_forward</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal" id="categoryModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Выберите категорию</h3>
+      <button class="modal-close" onclick="closeModals()">
+        <span class="material-icons-outlined">close</span>
+      </button>
+    </div>
+    <div class="category-list" id="categoryList"></div>
+  </div>
+</div>
+
+<!-- SUBCATEGORY MODAL -->
+<div class="modal" id="subcategoryModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="subcategoryTitle">Подкатегория</h3>
+      <button class="modal-close" onclick="closeModals()">
+        <span class="material-icons-outlined">close</span>
+      </button>
+    </div>
+    <div class="category-list" id="subcategoryList"></div>
+  </div>
+</div>
+
+<script src="/static/add2.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,263 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #0b1220, #0a1020);
+  color: #fff;
+}
+
+.app {
+  max-width: 420px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* SEARCH */
+.search-box {
+  margin: 0 16px 10px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  margin: 0 8px;
+}
+
+.search-box .mic {
+  opacity: .7;
+}
+
+/* CONTACTS */
+.contacts {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.contact {
+  display: flex;
+  padding: 12px 16px;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.avatar-wrap {
+  position: relative;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.online {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid #0b1220;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.last {
+  font-size: 13px;
+  opacity: .65;
+}
+
+.time {
+  font-size: 12px;
+  opacity: .5;
+}
+
+/* FLOAT */
+.fab {
+  position: fixed;
+  bottom: 72px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: none;
+  color: #fff;
+}
+
+/* BOTTOM */
+.bottom-nav {
+  height: 56px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #020617;
+}
+
+.bottom-nav span {
+  opacity: .5;
+}
+
+.bottom-nav .active {
+  opacity: 1;
+}
+
+/* Dropdown menu hidden by default */
+.dropdown-menu {
+    position: absolute;
+    top: 56px; /* Баландии header */
+    right: 16px;
+    width: 200px;
+    background-color: #0b1320; /* Dark blue background */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 100;
+}
+
+/* Dropdown active */
+.dropdown-menu.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #ffffff;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.2s;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #1b2433; /* Hover effect dark blue */
+}
+
+/* CHAT ITEM */
+.chat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden; /* пешгирӣ кардани overlap */
+}
+
+/* AVATAR - default size and circular */
+.chat img {
+  width: 48px;          /* кам карда шуд барои мобайл */
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #1e2a3a;
+  display: block;
+  flex-shrink: 0;       /* намегузорад аватар калон ё хурд шавад дар flex container */
+}
+
+/* FORCE AVATAR SIZE for contactsList */
+#contactsList .chat img {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  flex-shrink: 0;
+}
+
+/* Chat body (name + msg) */
+.chat-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.chat-name {
+  font-weight: 600;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* барои номҳои дароз */
+}
+
+.chat-msg {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Chat meta (вақт) */
+.chat-meta {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 40px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 480px) {
+  .chat img {
+    width: 44px;
+    height: 44px;
+  }
+  .chat-name { font-size: 15px; }
+  .chat-msg { font-size: 13px; }
+  .chat-meta { font-size: 11px; }
+}

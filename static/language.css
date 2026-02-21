@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at top, #1a1e35, #0b0e1a);
+  font-family: var(--font, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  color: var(--text-main, #fff);
+}
+
+/* PAGE — МИСЛИ PRIVACY */
+.page {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 16px 14px 40px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.header a {
+  font-size: 18px;
+  color: var(--accent-blue, #4da3ff);
+  text-decoration: none;
+}
+
+.header h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* SECTION */
+.section {
+  background: linear-gradient(180deg, #1a1d33, #14172a);
+  border-radius: 14px;
+  padding: 8px;
+}
+
+/* ITEM */
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px;
+  border-radius: 12px;
+  background: #1c203f;
+  cursor: pointer;
+}
+
+.item + .item {
+  margin-top: 8px;
+}
+
+.item:hover {
+  background: #23274a;
+}
+
+.item span {
+  font-size: 16px;
+}
+
+.check {
+  color: var(--accent-blue, #4da3ff);
+}

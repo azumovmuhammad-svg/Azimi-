@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Добавить фото - SadoApp</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="/static/add.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">
+      <span class="material-icons-outlined">arrow_back</span>
+    </button>
+    <span class="header-title">Новое объявление</span>
+    <button class="close-btn" onclick="exitPost()">
+      <span class="material-icons-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="progress-step active">1</div>
+    <div class="progress-line"></div>
+    <div class="progress-step">2</div>
+    <div class="progress-line"></div>
+    <div class="progress-step">3</div>
+    <div class="progress-line"></div>
+    <div class="progress-step">4</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    
+    <div class="step-title">Добавьте фото</div>
+    <div class="step-subtitle">Первое фото будет на обложке. Перетащите для сортировки.</div>
+
+    <!-- PHOTO GRID -->
+    <div class="photo-grid" id="photoGrid">
+      
+      <!-- ADD BUTTON -->
+      <label class="add-photo-btn" id="addPhotoBtn">
+        <input type="file" id="imageInput" accept="image/*" multiple hidden>
+        <div class="add-icon">
+          <span class="material-icons-outlined">add_a_photo</span>
+        </div>
+        <span class="add-text">Добавить фото</span>
+        <span class="add-hint">Максимум 10</span>
+      </label>
+
+    </div>
+
+    <!-- TIPS -->
+    <div class="tips-card">
+      <div class="tips-title">
+        <span class="material-icons-outlined">lightbulb</span>
+        Советы для лучших продаж
+      </div>
+      <ul class="tips-list">
+        <li>• Хорошее освещение — залог успеха</li>
+        <li>• Сфотографируйте с разных ракурсов</li>
+        <li>• Покажите состояние и дефекты</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM ACTION -->
+  <div class="bottom-bar">
+    <button class="next-btn" id="continueBtn" disabled>
+      Продолжить
+      <span class="material-icons-outlined">arrow_forward</span>
+    </button>
+  </div>
+
+</div>
+
+<script src="/static/add.js"></script>
+</body>
+</html>
+

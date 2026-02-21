@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Объявление #{{ post.id }} - Admin Panel{% endblock %}
+{% block page_title %}Детали объявления{% endblock %}
+
+{% block content %}
+<div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 20px;">
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-eye"></i></div>
+        <div class="stat-info">
+            <h3>{{ post.views or 0 }}</h3>
+            <p>Просмотры</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-phone"></i></div>
+        <div class="stat-info">
+            <h3>{{ post.calls or 0 }}</h3>
+            <p>Звонки</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon orange"><i class="fa-solid fa-calendar"></i></div>
+        <div class="stat-info">
+            <h3>{{ post.created_at.strftime('%d.%m.%Y') if post.created_at else '--' }}</h3>
+            <p>Создано</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fa-solid fa-flag"></i></div>
+        <div class="stat-info">
+            <h3>{{ post.status }}</h3>
+            <p>Статус</p>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+    <!-- LEFT COLUMN -->
+    <div>
+        <div class="table-card" style="margin-bottom: 24px;">
+            <div class="table-header">
+                <h3>Информация об объявлении</h3>
+                <span class="status-badge status-{{ post.status }}">{{ post.status }}</span>
+            </div>
+            
+            <div style="padding: 24px;">
+                <h2 style="margin-bottom: 16px; color: var(--text-primary);">{{ post.title or 'Без названия' }}</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                    <div>
+                        <label style="color: var(--text-muted); font-size: 12px;">Цена</label>
+                        <p style="font-size: 20px; font-weight: 700; color: var(--accent-green);">
+                            {% if post.price %}{{ "%.0f"|format(post.price) }} {{ post.currency or 'TJS' }}{% else %}Договорная{% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <label style="color: var(--text-muted); font-size: 12px;">Торг</label>
+                        <p>{{ 'Возможен' if post.bargain else 'Нет' }}</p>
+                    </div>
+                    <div>
+                        <label style="color: var(--text-muted); font-size: 12px;">Категория</label>
+                        <p>{{ post.category or '--' }} / {{ post.subcategory or '--' }}</p>
+                    </div>
+                    <div>
+                        <label style="color: var(--text-muted); font-size: 12px;">Локация</label>
+                        <p>{{ post.city or '--' }}, {{ post.district or '--' }}</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="color: var(--text-muted); font-size: 12px;">Описание</label>
+                    <p style="line-height: 1.6; white-space: pre-wrap;">{{ post.description or 'Нет описания' }}</p>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    {% if post.status == 'draft' %}
+                    <button onclick="approvePost({{ post.id }})" class="btn btn-primary">
+                        <i class="fa-solid fa-check"></i> Одобрить
+                    </button>
+                    {% endif %}
+                    <button onclick="deletePost({{ post.id }})" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i> Удалить
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Images -->
+        <div class="table-card">
+            <div class="table-header">
+                <h3>Фотографии</h3>
+            </div>
+            <div style="padding: 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;">
+                {% for img in images %}
+                <div style="aspect-ratio: 1; background: var(--bg-secondary); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-image" style="color: var(--text-muted);"></i>
+                </div>
+                {% else %}
+                <p style="color: var(--text-muted);">Нет фотографий</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+        <div class="table-card" style="margin-bottom: 24px;">
+            <div class="table-header">
+                <h3>Продавец</h3>
+            </div>
+            <div style="padding: 24px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-user" style="color: var(--text-muted);"></i>
+                    </div>
+                    <div>
+                        <p style="font-weight: 600;">{{ post.contact_name or user.username or 'Неизвестно' }}</p>
+                        <a href="/admin/users/{{ user.id }}" style="color: var(--accent-blue); font-size: 14px;">@{{ user.username or user.id }}</a>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 12px;">
+                    <label style="color: var(--text-muted); font-size: 12px;">Телефон</label>
+                    <p>{{ post.phone or user.phone or '--' }}</p>
+                </div>
+                
+                {% if post.telegram %}
+                <div style="margin-bottom: 12px;">
+                    <label style="color: var(--text-muted); font-size: 12px;">Telegram</label>
+                    <p>@{{ post.telegram }}</p>
+                </div>
+                {% endif %}
+                
+                <div>
+                    <label style="color: var(--text-muted); font-size: 12px;">Сообщения</label>
+                    <p>{{ 'Разрешены' if post.allow_messages else 'Запрещены' }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-header">
+                <h3>Дополнительно</h3>
+            </div>
+            <div style="padding: 24px;">
+                <div style="margin-bottom: 12px;">
+                    <label style="color: var(--text-muted); font-size: 12px;">Telegram виден</label>
+                    <p>{{ 'Да' if post.show_telegram else 'Нет' }}</p>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="color: var(--text-muted); font-size: 12px;">Опубликовано</label>
+                    <p>{{ post.published_at.strftime('%d.%m.%Y %H:%M') if post.published_at else '--' }}</p>
+                </div>
+                {% if post.archived_at %}
+                <div>
+                    <label style="color: var(--text-muted); font-size: 12px;">Архивировано</label>
+                    <p>{{ post.archived_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function approvePost(postId) {
+    if (confirm('Одобрить это объявление?')) {
+        fetch('/admin/posts/' + postId + '/approve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.status === 'ok') location.reload();
+        });
+    }
+}
+
+function deletePost(postId) {
+    if (confirm('Удалить это объявление?')) {
+        fetch('/admin/posts/' + postId, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.status === 'ok') window.location.href = '/admin/posts';
+        });
+    }
+}
+</script>
+{% endblock %}
+

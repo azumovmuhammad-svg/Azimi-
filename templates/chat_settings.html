@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat Settings</title>
+  <link rel="stylesheet" href="/static/chat_settings.css">
+</head>
+<body data-user-id="{{ user_id }}">
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="back">←</span>
+    <h1>Chat Settings</h1>
+  </div>
+
+  <!-- MESSAGE TEXT SIZE -->
+  <div class="card">
+    <div class="row space">
+      <span>Message text size</span>
+      <span class="value" id="fontValue">17</span>
+    </div>
+    <input type="range" min="12" max="24" value="17" id="fontRange">
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview">
+    <div class="msg left">
+      <b>Azimi</b><br>
+      Good morning!
+    </div>
+    <div class="msg right">
+      It's morning in Tokyo
+    </div>
+  </div>
+
+  <!-- OPTIONS -->
+  <div class="card list">
+    <div class="item">
+      <div class="icon">S</div>
+      <span>Change Chat Wallpaper</span>
+    </div>
+    <div class="item">
+      <div class="icon">S</div>
+      <span>Change Name Color</span>
+      <span class="tag">Azimi</span>
+    </div>
+  </div>
+
+  <!-- COLOR THEME -->
+  <div class="section-title">Color theme</div>
+<div class="themes">
+  <div class="theme purple" data-theme="purple"></div>
+  <div class="theme green" data-theme="green"></div>
+  <div class="theme blue" data-theme="blue"></div>
+  <div class="theme orange" data-theme="orange"></div>
+  <div class="theme pink" data-theme="pink"></div>
+</div>
+
+  <!-- MORE OPTIONS -->
+  <div class="card list">
+    <div class="item">
+      <div class="icon">S</div>
+      <span>Switch to Day Mode</span>
+    </div>
+    <div class="item">
+      <div class="icon">S</div>
+      <span>Browse Themes</span>
+    </div>
+  </div>
+
+  <!-- CHAT LIST VIEW -->
+  <div class="section-title">Chat list view</div>
+  <div class="chat-view">
+    <div class="view active">
+      <span></span><span></span>
+      <p>Two lines</p>
+    </div>
+    <div class="view">
+      <span></span><span></span><span></span>
+      <p>Three lines</p>
+    </div>
+  </div>
+
+  <!-- TOGGLES -->
+  <div class="card list">
+    <div class="item toggle">
+      <span>Auto-Night Mode</span>
+      <input type="checkbox">
+    </div>
+    <div class="item toggle">
+      <span>In-App Browser</span>
+      <input type="checkbox" checked>
+    </div>
+    <div class="item toggle">
+      <span>Animations</span>
+      <input type="checkbox" checked>
+    </div>
+  </div>
+
+<div class="section">
+  <div class="section-title">Message Corners</div>
+
+  <div class="bubble-options">
+    <div class="bubble-option active" data-style="round">
+      <div class="bubble-preview round">Hello</div>
+      <span>Round</span>
+    </div>
+
+    <div class="bubble-option" data-style="square">
+      <div class="bubble-preview square">Hello</div>
+      <span>Square</span>
+    </div>
+
+    <div class="bubble-option" data-style="ios">
+      <div class="bubble-preview ios">Hello</div>
+      <span>iOS</span>
+    </div>
+  </div>
+
+<div class="section">
+  <div class="section-title">Color Theme</div>
+
+  <div class="theme-options">
+    <div class="theme-option" data-theme="default" style="background: #1a1e35;"></div>
+    <div class="theme-option" data-theme="purple" style="background: #6a0dad;"></div>
+    <div class="theme-option" data-theme="green" style="background: #2ecc71;"></div>
+    <div class="theme-option" data-theme="orange" style="background: #e67e22;"></div>
+    <div class="theme-option" data-theme="pink" style="background: #ff69b4;"></div>
+    <div class="theme-option" data-theme="dark" style="background: #0b0e1a;"></div>
+   </div>
+ </div>
+</div>
+
+<script src="/static/chat_settings.js"></script>
+</body>
+</html>

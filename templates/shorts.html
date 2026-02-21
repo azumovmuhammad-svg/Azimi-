@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts</title>
+  <link rel="stylesheet" href="/static/shorts.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+  <div class="shorts-container" id="shortsContainer">
+    <div class="loading">Загрузка...</div>
+  </div>
+  
+  <div class="shorts-nav">
+    <span class="material-icons-outlined" onclick="window.location.href='/feed'">home</span>
+    <span class="material-icons-outlined" style="color: #fff;">play_circle</span>
+    <span class="material-icons-outlined" onclick="window.location.href='/auth/add-selection?post_id=0'">add_circle</span>
+    <span class="material-icons-outlined">person</span>
+  </div>
+
+  <script src="/static/shorts.js?v=2"></script>
+</body>
+</html>
+

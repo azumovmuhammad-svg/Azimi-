@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Уведомления - SadoMarket</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/static/notifications.css"/> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <i class="fa-solid fa-arrow-left" onclick="goBack()"></i>
+    <span>Уведомления</span>
+  </div>
+
+  <!-- Уведомления объявлений -->
+  <div class="section">
+    <div class="section-title">Уведомления объявлений</div>
+
+    <div class="item">
+      <i class="fa-solid fa-bullhorn icon"></i>
+      <div class="text">
+        <div class="title">Новое объявление</div>
+        <div class="subtitle">При публикации нового объявления</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="newPostNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-heart icon"></i>
+      <div class="text">
+        <div class="title">Лайки и просмотры</div>
+        <div class="subtitle">При лайке или просмотре объявления</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="likeNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-comment icon"></i>
+      <div class="text">
+        <div class="title">Сообщения о товаре</div>
+        <div class="subtitle">Вопросы от покупателей</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="messageNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-tag icon"></i>
+      <div class="text">
+        <div class="title">Изменение цены</div>
+        <div class="subtitle">При снижении цены</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="priceDropNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Уведомления заказов -->
+  <div class="section">
+    <div class="section-title">Уведомления заказов</div>
+
+    <div class="item">
+      <i class="fa-solid fa-cart-shopping icon"></i>
+      <div class="text">
+        <div class="title">Новый заказ</div>
+        <div class="subtitle">При заказе товара</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="orderNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-box icon"></i>
+      <div class="text">
+        <div class="title">Статус доставки</div>
+        <div class="subtitle">Изменение статуса заказа</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="shippingNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-star icon"></i>
+      <div class="text">
+        <div class="title">Отзывы</div>
+        <div class="subtitle">Новый отзыв о вас</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="reviewNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Безопасность -->
+  <div class="section">
+    <div class="section-title">Безопасность</div>
+
+    <div class="item">
+      <i class="fa-solid fa-shield-halved icon"></i>
+      <div class="text">
+        <div class="title">Новый вход</div>
+        <div class="subtitle">Вход с нового устройства</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="loginNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <i class="fa-solid fa-money-bill icon"></i>
+      <div class="text">
+        <div class="title">Финансовые операции</div>
+        <div class="subtitle">Оплата и получение средств</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="paymentNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Звуки -->
+  <div class="section">
+    <div class="section-title">Звуки</div>
+
+    <div class="item link" onclick="changeSound('message')">
+      <i class="fa-solid fa-music icon"></i>
+      <div class="text">
+        <div class="title">Звук сообщения</div>
+      </div>
+      <span class="value" id="msgSound">По умолчанию</span>
+    </div>
+
+    <div class="item link" onclick="changeSound('order')">
+      <i class="fa-solid fa-bell icon"></i>
+      <div class="text">
+        <div class="title">Звук заказа</div>
+      </div>
+      <span class="value" id="orderSound">По умолчанию</span>
+    </div>
+  </div>
+
+  <!-- Сброс -->
+  <div class="section">
+    <div class="reset" onclick="resetNotifications()">Сбросить настройки</div>
+  </div>
+
+</div>
+
+<script src="/static/notifications.js"></script>
+</body>
+</html>'''
+

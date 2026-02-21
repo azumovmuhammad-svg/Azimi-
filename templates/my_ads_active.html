@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Активные объявления - SadoApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/my_ads_active.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="material-icons-outlined back-btn">arrow_back</span>
+    <span class="header-title">Активные объявления</span>
+    <span class="material-icons-outlined more-btn">more_vert</span>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number" id="activeCount">0</span>
+      <span class="stat-label">Активные</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" id="viewsCount">0</span>
+      <span class="stat-label">Просмотры</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" id="callsCount">0</span>
+      <span class="stat-label">Звонки</span>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-section">
+    <button class="filter-btn active" data-filter="all">
+      <span class="material-icons-outlined">apps</span>
+      Все
+    </button>
+    <button class="filter-btn" data-filter="recent">
+      <span class="material-icons-outlined">schedule</span>
+      Недавние
+    </button>
+    <button class="filter-btn" data-filter="popular">
+      <span class="material-icons-outlined">trending_up</span>
+      Популярные
+    </button>
+  </div>
+
+  <!-- ADS LIST -->
+  <div class="ads-container" id="adsContainer">
+    <!-- Ads will be loaded here -->
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" style="display: none;">
+    <div class="empty-icon">
+      <span class="material-icons-outlined">inventory_2</span>
+    </div>
+    <h3>Нет активных объявлений</h3>
+    <p>Разместите своё первое объявление, чтобы начать продавать</p>
+    <button class="create-ad-btn" onclick="window.location.href='/auth/add-selection'">
+      <span class="material-icons-outlined">add_circle</span>
+      Создать объявление
+    </button>
+  </div>
+
+  <!-- FLOATING ACTION BUTTON -->
+  <button class="fab" onclick="window.location.href='/auth/add-selection'">
+    <span class="material-icons-outlined">add</span>
+  </button>
+
+</div>
+
+<script src="/static/my_ads_active.js"></script>
+</body>
+</html>
+

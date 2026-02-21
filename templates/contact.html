@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Связаться с поддержкой - Azimi</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <a href="/help"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Поддержка</h1>
+  </div>
+  <div class="hero">
+    <div class="hero-icon"><i class="fa-solid fa-headset"></i></div>
+    <div class="hero-text">Мы всегда на связи</div>
+  </div>
+  <div class="section">
+    <div class="contact-method">
+      <i class="fa-brands fa-telegram"></i>
+      <div>
+        <h4>Telegram</h4>
+        <p>@azimovo4</p>
+        <span class="response-time">Ответ за 5 минут</span>
+      </div>
+    </div>
+    <div class="contact-method">
+      <i class="fa-solid fa-envelope"></i>
+      <div>
+        <h4>Email</h4>
+        <p>support@azimi.tj</p>
+        <span class="response-time">Ответ за 24 часа</span>
+      </div>
+    </div>
+    <div class="contact-method">
+      <i class="fa-solid fa-phone"></i>
+      <div>
+        <h4>Телефон</h4>
+        <p>+992 000771679</p>
+        <span class="response-time">Пн-Пт 9:00-18:00</span>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Или напишите здесь</div>
+    <form class="contact-form" onsubmit="event.preventDefault(); alert('Сообщение отправлено!');">
+      <select class="form-input">
+        <option>Тема обращения</option>
+        <option>Проблема с аккаунтом</option>
+        <option>Жалоба на объявление</option>
+        <option>Мошенничество</option>
+        <option>Другое</option>
+      </select>
+      <textarea class="form-input" rows="5" placeholder="Опишите вашу проблему..."></textarea>
+      <button type="submit" class="btn-primary">
+        <i class="fa-solid fa-paper-plane"></i> Отправить
+      </button>
+    </form>
+  </div>
+  <div class="footer">azimi Help Center</div>
+</div>
+</body>
+</html>

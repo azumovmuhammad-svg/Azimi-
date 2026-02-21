@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Категории - Admin Panel{% endblock %}
+{% block page_title %}Категории{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h3>Управление категориями</h3>
+        <button onclick="openAddModal()" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Добавить
+        </button>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Иконка</th>
+                <th>Название</th>
+                <th>Объявлений</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in categories %}
+            <tr>
+                <td>{{ cat.id or loop.index }}</td>
+                <td><i class="fa-solid {{ cat.icon or 'fa-tag' }}"></i></td>
+                <td>{{ cat.name }}</td>
+                <td><span class="status-badge" style="background: rgba(59, 130, 246, 0.2); color: var(--accent-blue);">{{ cat.posts_count or 0 }}</span></td>
+                <td>
+                    <button onclick="editCategory('{{ cat.name }}')" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-edit"></i>
+                    </button>
+                    <button onclick="deleteCategory('{{ cat.name }}')" class="btn btn-danger btn-sm">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                    Категории не найдены. Добавьте первую категорию.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Modal -->
+<div id="addModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: var(--bg-card); padding: 32px; border-radius: 16px; width: 90%; max-width: 400px; border: 1px solid var(--border-color);">
+        <h3 style="margin-bottom: 24px;">Новая категория</h3>
+        <form id="addCategoryForm">
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Название</label>
+                <input type="text" name="name" required style="width: 100%; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary);">
+            </div>
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Иконка (FontAwesome класс)</label>
+                <input type="text" name="icon" placeholder="fa-car" style="width: 100%; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary);">
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button type="button" onclick="closeModal()" class="btn btn-secondary">Отмена</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openAddModal() {
+    document.getElementById('addModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('addModal').style.display = 'none';
+}
+
+document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    fetch('/admin/categories/add', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            location.reload();
+        }
+    });
+});
+
+function deleteCategory(name) {
+    if (confirm('Удалить категорию "' + name + '"?')) {
+        // API endpoint needed
+        alert('Функция в разработке');
+    }
+}
+
+function editCategory(name) {
+    alert('Редактирование: ' + name);
+}
+</script>
+{% endblock %}
+

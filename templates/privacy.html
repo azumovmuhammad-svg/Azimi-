@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Конфиденциальность - SadoMarket</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/static/privacy.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <i class="fa-solid fa-arrow-left" onclick="goBack()"></i>
+    <h1>Конфиденциальность</h1>
+  </div>
+
+  <!-- Информация продавца -->
+  <div class="section">
+    <div class="section-title">Информация продавца</div>
+
+    <div class="item clickable" onclick="goTo('/privacy/phone')">
+      <div class="item-left">
+        <i class="fa-solid fa-phone"></i>
+        <div class="text-col">
+          <span>Показывать телефон</span>
+          <small>Все</small>
+        </div>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/privacy/location')">
+      <div class="item-left">
+        <i class="fa-solid fa-location-dot"></i>
+        <div class="text-col">
+          <span>Местоположение</span>
+          <small>Показывается</small>
+        </div>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item">
+      <div class="item-left">
+        <i class="fa-solid fa-user"></i>
+        <span>Профиль продавца</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="showProfile">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <div class="item-left">
+        <i class="fa-solid fa-star"></i>
+        <span>Рейтинг и отзывы</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="showRating">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Объявления -->
+  <div class="section">
+    <div class="section-title">Настройки объявлений</div>
+
+    <div class="item clickable" onclick="goTo('/privacy/hidden-posts')">
+      <div class="item-left">
+        <i class="fa-solid fa-eye-slash"></i>
+        <div class="text-col">
+          <span>Скрытые объявления</span>
+          <small>0 объявлений</small>
+        </div>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/privacy/blocked-users')">
+      <div class="item-left">
+        <i class="fa-solid fa-user-slash"></i>
+        <span>Заблокированные пользователи</span>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item">
+      <div class="item-left">
+        <i class="fa-solid fa-comment-slash"></i>
+        <span>Блокировать сообщения</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="blockMessages">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Безопасность -->
+  <div class="section">
+    <div class="section-title">Безопасность</div>
+
+    <div class="item clickable" onclick="goTo('/privacy/password')">
+      <div class="item-left">
+        <i class="fa-solid fa-lock"></i>
+        <span>Сменить пароль</span>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/privacy/2fa')">
+      <div class="item-left">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div class="text-col">
+          <span>Двухфакторная аутентификация</span>
+          <small>Выключено</small>
+        </div>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/privacy/sessions')">
+      <div class="item-left">
+        <i class="fa-solid fa-mobile-screen"></i>
+        <div class="text-col">
+          <span>Активные устройства</span>
+          <small>1 устройство</small>
+        </div>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+  </div>
+
+  <!-- Статистика -->
+  <div class="section">
+    <div class="section-title">Статистика</div>
+
+    <div class="item">
+      <div class="item-left">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Статистика объявлений</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="showStats">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="item">
+      <div class="item-left">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>История активности</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" checked id="showHistory">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Сброс -->
+  <button class="danger-btn" onclick="resetPrivacy()">Сбросить настройки</button>
+
+</div>
+
+<script src="/static/privacy.js"></script>
+</body>
+</html>'''
+

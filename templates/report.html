@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Сообщить о проблеме - azimi</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <a href="/help"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Сообщить о проблеме</h1>
+  </div>
+  <div class="hero" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+    <div class="hero-icon"><i class="fa-solid fa-flag"></i></div>
+    <div class="hero-text">Помогите сделать платформу безопаснее</div>
+  </div>
+  <div class="section">
+    <div class="report-types">
+      <div class="report-type" onclick="selectReport('scam')">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Мошенничество</span>
+      </div>
+      <div class="report-type" onclick="selectReport('spam')">
+        <i class="fa-solid fa-comment-slash"></i>
+        <span>Спам</span>
+      </div>
+      <div class="report-type" onclick="selectReport('wrong')">
+        <i class="fa-solid fa-circle-xmark"></i>
+        <span>Неверная информация</span>
+      </div>
+      <div class="report-type" onclick="selectReport('other')">
+        <i class="fa-solid fa-ellipsis"></i>
+        <span>Другое</span>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <form class="report-form" onsubmit="event.preventDefault(); alert('Жалоба отправлена! Рассмотрим в течение 24 часов.');">
+      <input type="text" class="form-input" placeholder="ID объявления или пользователя">
+      <textarea class="form-input" rows="5" placeholder="Опишите проблему подробно..."></textarea>
+      <div class="file-upload">
+        <i class="fa-solid fa-camera"></i>
+        <span>Прикрепить скриншот (необязательно)</span>
+      </div>
+      <button type="submit" class="btn-danger">
+        <i class="fa-solid fa-paper-plane"></i> Отправить жалобу
+      </button>
+    </form>
+  </div>
+  <div class="footer">azimi Help Center</div>
+</div>
+<script>
+function selectReport(type) {
+  document.querySelectorAll('.report-type').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+</script>
+</body>
+</html>
+

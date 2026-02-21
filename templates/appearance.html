@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Внешний вид - SadoMarket</title>
+  <link rel="stylesheet" href="/static/appearance.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="phone">
+  <div class="screen">
+
+    <div class="header">
+      <span class="back" onclick="goBack()">‹</span>
+      <span class="title">Внешний вид</span>
+    </div>
+
+    <!-- Тема -->
+    <div class="card">
+      <div class="row">
+        <span><i class="fa-solid fa-moon"></i> Автоночной режим</span>
+        <label class="switch">
+          <input type="checkbox" checked id="autoNight">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Акцентный цвет -->
+    <div class="card">
+      <div class="row arrow" onclick="selectColor()">
+        <span><i class="fa-solid fa-palette"></i> Акцентный цвет</span>
+        <div class="color-box" id="accentColor" style="background: #ff5722;"></div>
+      </div>
+
+      <div class="preview" id="themePreview">
+        <div class="preview-item">
+          <div class="preview-img"></div>
+          <div class="preview-text">
+            <div class="preview-title">Название товара</div>
+            <div class="preview-price">1 000 сомони</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="label">Размер текста</div>
+      <input type="range" min="12" max="20" value="15" id="textSize">
+
+      <div class="icon-row">
+        <div class="icon" onclick="setGrid(1)" title="Список"><i class="fa-solid fa-list"></i></div>
+        <div class="icon active" onclick="setGrid(2)" title="Сетка"><i class="fa-solid fa-border-all"></i></div>
+        <div class="icon" onclick="setGrid(3)" title="Крупно"><i class="fa-solid fa-image"></i></div>
+        <span class="shape">Вид объявлений ›</span>
+      </div>
+    </div>
+
+    <!-- Отображение объявлений -->
+    <div class="card">
+      <div class="label">Отображение объявлений</div>
+      
+      <div class="row">
+        <span><i class="fa-solid fa-images"></i> Несколько фото</span>
+        <label class="switch">
+          <input type="checkbox" checked id="multiImage">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="row">
+        <span><i class="fa-solid fa-heart"></i> Лайк в списке</span>
+        <label class="switch">
+          <input type="checkbox" checked id="showLike">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="row">
+        <span><i class="fa-solid fa-location-dot"></i> Показывать местоположение</span>
+        <label class="switch">
+          <input type="checkbox" checked id="showLocation">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Иконка -->
+    <div class="card">
+      <div class="row">
+        <span><i class="fa-solid fa-mobile-screen"></i> Иконка приложения</span>
+        <div class="right">
+          <span class="sub">По умолчанию</span>
+          <label class="switch">
+            <input type="checkbox" id="appIcon">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Превью -->
+    <div class="preview-message" id="previewText">
+      <i class="fa-solid fa-tag"></i> Предпросмотр объявления
+    </div>
+
+  </div>
+</div>
+
+<script src="/static/appearance.js"></script>
+</body>
+</html>
+

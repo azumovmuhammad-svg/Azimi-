@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>SadoApp - Подтверждение</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #0a1628 0%, #1a237e 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+    }
+
+    .page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      padding-top: 20px;
+      margin-bottom: 32px;
+    }
+
+    .back-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(100, 181, 246, 0.1);
+      border: 1px solid rgba(100, 181, 246, 0.3);
+      color: #64b5f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .back-btn:active {
+      background: rgba(100, 181, 246, 0.2);
+    }
+
+    .back-btn span {
+      font-size: 24px;
+    }
+
+    /* Card */
+    .card {
+      background: rgba(13, 27, 56, 0.8);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px 24px;
+      border: 1px solid rgba(100, 181, 246, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 24px rgba(46, 204, 113, 0.4);
+    }
+
+    .logo span {
+      font-size: 40px;
+      color: #fff;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #90a4ae;
+      margin-bottom: 8px;
+    }
+
+    #phone-display {
+      font-size: 18px;
+      font-weight: 600;
+      color: #64b5f6;
+      margin-bottom: 32px;
+      padding: 12px;
+      background: rgba(100, 181, 246, 0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(100, 181, 246, 0.2);
+    }
+
+    /* Code Inputs */
+    .code-inputs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .code-input {
+      width: 50px;
+      height: 60px;
+      background: rgba(30, 136, 229, 0.1);
+      border: 2px solid rgba(100, 181, 246, 0.3);
+      border-radius: 14px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .code-input:focus {
+      border-color: #1e88e5;
+      background: rgba(30, 136, 229, 0.15);
+      box-shadow: 0 0 20px rgba(30, 136, 229, 0.3);
+      transform: scale(1.05);
+    }
+
+    .code-input.filled {
+      border-color: #2ecc71;
+      background: rgba(46, 204, 113, 0.1);
+    }
+
+    /* Timer */
+    .timer-section {
+      margin-bottom: 24px;
+    }
+
+    .timer-text {
+      font-size: 14px;
+      color: #90a4ae;
+      margin-bottom: 12px;
+    }
+
+    .timer-countdown {
+      font-size: 28px;
+      font-weight: 700;
+      color: #64b5f6;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .resend-btn {
+      background: none;
+      border: none;
+      color: #64b5f6;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      margin: 0 auto;
+    }
+
+    .resend-btn.active {
+      display: inline-flex;
+    }
+
+    .resend-btn span {
+      font-size: 18px;
+    }
+
+    /* Face SMS Info */
+    .face-sms-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: rgba(46, 204, 113, 0.1);
+      border: 1px solid rgba(46, 204, 113, 0.3);
+      border-radius: 16px;
+    }
+
+    .face-sms-info span {
+      font-size: 24px;
+      color: #2ecc71;
+    }
+
+    .face-sms-info div {
+      text-align: left;
+    }
+
+    .face-sms-info .label {
+      font-size: 13px;
+      color: #2ecc71;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .face-sms-info .value {
+      font-size: 14px;
+      color: #90a4ae;
+    }
+
+    /* Button */
+    .button {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #1e88e5, #0d47a1);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(30, 136, 229, 0.4);
+    }
+
+    .button:active {
+      transform: scale(0.98);
+    }
+
+    .button:disabled {
+      background: #37474f;
+      color: #78909c;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Help */
+    .help-section {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .help-link {
+      color: #64b5f6;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .wrong-number {
+      margin-top: 16px;
+      background: none;
+      border: none;
+      color: #78909c;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <button class="back-btn" onclick="history.back()">
+        <span class="material-icons-outlined">arrow_back</span>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="logo">
+        <span class="material-icons-outlined">message</span>
+      </div>
+      
+      <div class="title">Код подтверждения</div>
+      <div class="subtitle">Код отправлен на номер</div>
+      <div id="phone-display">+992 92 XXX XX XX</div>
+
+      <!-- Face SMS Info -->
+      <div class="face-sms-info">
+        <span class="material-icons-outlined">verified_user</span>
+        <div>
+          <div class="label">Face SMS</div>
+          <div class="value">Безопасная верификация</div>
+        </div>
+      </div>
+
+      <form id="code-form">
+        <div class="code-inputs">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric">
+        </div>
+
+        <div class="timer-section">
+          <div class="timer-text">Отправить код повторно через</div>
+          <div class="timer-countdown" id="countdown">00:59</div>
+          <button type="button" class="resend-btn" id="resendBtn">
+            <span class="material-icons-outlined">refresh</span>
+            Отправить повторно
+          </button>
+        </div>
+
+        <button type="submit" class="button" id="submitBtn" disabled>
+          <span class="material-icons-outlined">check_circle</span>
+          Подтвердить
+        </button>
+      </form>
+
+      <div class="help-section">
+        <a href="#" class="help-link">Не приходит код?</a>
+        <br>
+        <button class="wrong-number" onclick="history.back()">
+          Неверный номер телефона?
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script_register.js"></script>
+</body>
+</html>
+

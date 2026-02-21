@@ -1,0 +1,27 @@
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Python кэш
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Директорияҳои муҳити замонӣ
+uploads/
+static/uploads/
+*.db
+
+# Файлҳои конфигуратсия
+.env
+.env.local
+config.py.bak
+
+# Логҳо
+*.log
+logs/

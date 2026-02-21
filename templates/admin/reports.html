@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Жалобы - Admin Panel{% endblock %}
+{% block page_title %}Жалобы{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h3>Управление жалобами</h3>
+        <div class="table-actions">
+            <select id="statusFilter" style="padding: 10px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary);">
+                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>В ожидании</option>
+                <option value="resolved" {% if status_filter == 'resolved' %}selected{% endif %}>Решенные</option>
+                <option value="all" {% if status_filter == 'all' %}selected{% endif %}>Все</option>
+            </select>
+        </div>
+    </div>
+
+    {% if reports %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Отправитель</th>
+                <th>Обвиняемый</th>
+                <th>Объявление</th>
+                <th>Причина</th>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>#{{ report.id }}</td>
+                <td>{{ report.reporter_name or 'Неизвестно' }}</td>
+                <td>{{ report.reported_name or 'Неизвестно' }}</td>
+                <td>
+                    {% if report.post_title %}
+                    <a href="/admin/posts/{{ report.post_id }}" style="color: var(--accent-blue);">
+                        {{ report.post_title[:30] }}...
+                    </a>
+                    {% else %}
+                    <span style="color: var(--text-muted);">-</span>
+                    {% endif %}
+                </td>
+                <td>{{ report.reason or 'Не указана' }}</td>
+                <td>{{ report.created_at.strftime('%d.%m.%Y %H:%M') if report.created_at else '--' }}</td>
+                <td>
+                    <span class="status-badge status-{{ report.status or 'pending' }}">
+                        {{ report.status or 'pending' }}
+                    </span>
+                </td>
+                <td>
+                    <div style="display: flex; gap: 8px;">
+                        {% if report.status != 'resolved' %}
+                        <button onclick="resolveReport({{ report.id }}, 'warning')" class="btn btn-sm" style="background: var(--accent-orange); color: white;" title="Предупреждение">
+                            <i class="fa-solid fa-exclamation"></i>
+                        </button>
+                        <button onclick="resolveReport({{ report.id }}, 'block')" class="btn btn-danger btn-sm" title="Блокировать">
+                            <i class="fa-solid fa-ban"></i>
+                        </button>
+                        {% endif %}
+                        <button onclick="deleteReport({{ report.id }})" class="btn btn-secondary btn-sm" title="Удалить">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div style="padding: 60px 40px; text-align: center;">
+        <div style="width: 80px; height: 80px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; border: 2px solid rgba(245, 158, 11, 0.3);">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 32px; color: var(--accent-orange);"></i>
+        </div>
+        <h3 style="margin-bottom: 12px; color: var(--text-primary);">Функция в разработке</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 8px;">Таблица <code style="background: var(--bg-secondary); padding: 2px 8px; border-radius: 4px;">reports</code> не создана в базе данных.</p>
+        <p style="color: var(--text-muted); font-size: 14px;">Для создания таблицы выполните SQL:</p>
+        <pre style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; text-align: left; overflow-x: auto; margin: 16px auto; max-width: 600px; font-size: 12px; color: var(--text-secondary);">
+CREATE TABLE reports (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reporter_id INT NOT NULL,
+    reported_id INT,
+    post_id INT,
+    reason TEXT,
+    status VARCHAR(20) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    resolved_at DATETIME,
+    action VARCHAR(50)
+);</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('statusFilter')?.addEventListener('change', function() {
+    const status = this.value;
+    if (status === 'all') {
+        window.location.href = '/admin/reports';
+    } else {
+        window.location.href = '/admin/reports?status=' + status;
+    }
+});
+
+function resolveReport(reportId, action) {
+    const actions = {
+        'warning': 'отправить предупреждение',
+        'block': 'заблокировать пользователя'
+    };
+    
+    if (confirm('Вы уверены, что хотите ' + actions[action] + '?')) {
+        fetch('/admin/reports/' + reportId + '/resolve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                alert('Жалоба решена');
+                location.reload();
+            } else {
+                alert(data.message || 'Ошибка');
+            }
+        });
+    }
+}
+
+function deleteReport(reportId) {
+    if (confirm('Удалить жалобу #' + reportId + '?')) {
+        // API endpoint needed
+        alert('Функция удаления в разработке');
+    }
+}
+</script>
+{% endblock %}
+

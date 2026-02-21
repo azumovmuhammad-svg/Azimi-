@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Select Country</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="/static/change_phone_country.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="top-bar">
+    <button class="back" onclick="history.back()">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="title">Choose a country</div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-box">
+    <span class="material-icons">search</span>
+    <input id="searchInput" type="text" placeholder="Search">
+  </div>
+
+  <!-- LIST -->
+  <div class="list" id="countryList">
+
+    <div class="region">Central Asia</div>
+
+    <div class="item" data-name="Tajikistan" data-code="+992">
+      <span>Tajikistan</span>
+      <span class="code">+992</span>
+    </div>
+
+    <div class="item" data-name="Uzbekistan" data-code="+998">
+      <span>Uzbekistan</span>
+      <span class="code">+998</span>
+    </div>
+
+    <div class="item" data-name="Kazakhstan" data-code="+7">
+      <span>Kazakhstan</span>
+      <span class="code">+7</span>
+    </div>
+
+    <div class="region">Europe</div>
+
+    <div class="item" data-name="Russia" data-code="+7">
+      <span>Russian Federation</span>
+      <span class="code">+7</span>
+    </div>
+
+    <div class="item" data-name="Germany" data-code="+49">
+      <span>Germany</span>
+      <span class="code">+49</span>
+    </div>
+
+    <div class="region">Middle East</div>
+
+    <div class="item" data-name="Turkey" data-code="+90">
+      <span>Turkey</span>
+      <span class="code">+90</span>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="/static/change_phone_country.js"></script>
+</body>
+</html>

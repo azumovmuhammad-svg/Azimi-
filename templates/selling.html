@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Продажа - Помощь</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <a href="/help"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Продажа</h1>
+  </div>
+
+  <div class="hero">
+    <div class="hero-icon"><i class="fa-solid fa-store"></i></div>
+    <div class="hero-text">Как продавать на azimi объявление</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Как создать объявление</div>
+
+    <div class="help-card">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>Выберите категорию</h3>
+        <p>Определитесь с разделом: Авто, Недвижимость, Электроника, Одежда и т.д.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>Сделайте качественные фото</h3>
+        <p>Хорошее освещение, чистый фон, все ракурсы. Минимум 3-5 фото.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>Опишите товар честно</h3>
+        <p>Укажите состояние, дефекты, комплектацию. Честность = доверие.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h3>Назначьте цену</h3>
+        <p>Посмотрите похожие товары. Оставьте небольшой запас для торга.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <h3>Укажите контакты</h3>
+        <p>Телефон и удобное время для звонков. Отвечайте быстро!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Советы для успешных продаж</div>
+
+    <div class="tip-item">
+      <i class="fa-solid fa-star tip-icon" style="color: #fbbf24;"></i>
+      <div class="tip-text">
+        <strong>Первое фото - главное</strong>
+        <p>Именно оно привлекает внимание в поиске. Сделайте его ярким и четким.</p>
+      </div>
+    </div>
+
+    <div class="tip-item">
+      <i class="fa-solid fa-clock tip-icon" style="color: #3b82f6;"></i>
+      <div class="tip-text">
+        <strong>Отвечайте быстро</strong>
+        <p>Покупатели уходят к конкурентам, если ждут ответа долго.</p>
+      </div>
+    </div>
+
+    <div class="tip-item">
+      <i class="fa-solid fa-rotate tip-icon" style="color: #22c55e;"></i>
+      <div class="tip-text">
+        <strong>Обновляйте объявление</strong>
+        <p>Поднимайте объявление в поиске каждые несколько дней.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="cta-box">
+      <h3>Готовы продать?</h3>
+      <p>Создайте объявление прямо сейчас</p>
+      <button class="btn-primary" onclick="goTo('/create-post')">
+        <i class="fa-solid fa-plus"></i> Разместить объявление
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">azimi Help Center</div>
+
+</div>
+
+<script>
+function goTo(url) {
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
+

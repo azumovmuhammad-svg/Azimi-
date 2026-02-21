@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change number</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/static/change_phone.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="top-bar">
+    <button class="back" onclick="history.back()">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="title">Change number</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="icons">
+      <span class="material-icons sim">sim_card</span>
+      <span class="material-icons arrow">arrow_forward</span>
+      <span class="material-icons sim">sim_card</span>
+    </div>
+
+    <p class="text big">
+      Changing your phone number will migrate your account info, groups & settings.
+    </p>
+
+    <p class="text">
+      Before proceeding, please confirm that you are able to receive SMS or calls at your new number.
+    </p>
+
+    <p class="text">
+      If you have both a new phone & a new number, first change your number on your old phone.
+    </p>
+
+    <!-- OLD PHONE -->
+    <label>Old phone number</label>
+    <div class="phone-row">
+      <span class="code">+7</span>
+      <input id="oldPhone" type="text" readonly>
+    </div>
+
+    <!-- NEW PHONE -->
+    <label>New phone number</label>
+    <div class="phone-row active">
+      <span class="code">+7</span>
+      <input id="newPhone" type="text" placeholder="New phone number">
+    </div>
+
+  </div>
+
+  <!-- NEXT -->
+  <button class="next-btn" id="nextBtn">Next</button>
+
+</div>
+
+<script src="/static/change_phone.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в Admin Panel - SadoMarket</title>
+    <link rel="stylesheet" href="/static/admin/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-box">
+            <div class="login-logo">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h1>SadoAdmin</h1>
+                <p>Панель управления платформой</p>
+            </div>
+
+            {% if error %}
+            <div class="error-message">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>Неверный логин или пароль</span>
+            </div>
+            {% endif %}
+
+            <form action="/admin/login" method="POST">
+                <div class="form-group">
+                    <label for="username">Логин</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Введите логин"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Введите пароль"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Войти в систему
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

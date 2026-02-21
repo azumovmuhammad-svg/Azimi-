@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>SadoApp - Сообщения</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="/static/history.css">
+</head>
+<body>
+  <div class="page">
+    <!-- HEADER -->
+    <div class="header">
+      <button class="back-btn" onclick="history.back()">
+        <span class="material-icons-outlined">arrow_back</span>
+      </button>
+      <h1>Сообщения</h1>
+    </div>
+    
+    <!-- CHAT LIST -->
+    <div class="chat-list" id="chatList">
+      <div class="loading">
+        <span class="material-icons-outlined">hourglass_top</span>
+        <span>Загрузка...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV (аз feed.html) -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="/feed/" class="nav-item">
+      <span class="material-icons-outlined">home</span>
+      <small>Лента</small>
+    </a>
+
+    <a href="javascript:void(0)" class="nav-item" id="shorts-btn">
+      <span class="material-icons-outlined">play_circle</span>
+      <small>Shorts</small>
+    </a>
+
+    <a href="javascript:void(0)" class="nav-item add" onclick="startNewPost()">
+      <span class="material-icons-outlined">add</span>
+    </a>
+
+    <a href="/favorite" class="nav-item">
+      <span class="material-icons-outlined">favorite_border</span>
+      <small>Избранное</small>
+    </a>
+
+    <a href="/auth/history" class="nav-item active">
+      <span class="material-icons-outlined">chat</span>
+      <small>Чат</small>
+    </a>
+  </nav>
+
+  <script>
+    window.IS_LOGGED_IN = true;  // Дар ин саҳифа ҳамеша true
+  </script>
+  <script src="/static/history.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit name</title>
+
+<link rel="stylesheet" href="/static/edit_name.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="top-bar">
+    <button class="back" onclick="history.back()">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="title">Name</div>
+  </div>
+
+  <!-- CONTENT -->
+<div class="content">
+
+  <div class="bubble input-bubble">
+    <input
+      type="text"
+      id="nameInput"
+      placeholder="Your name"
+      maxlength="40"
+      autocomplete="off"
+    >
+  </div>
+   <div class="char-count" id="charCount">0/40</div>
+
+   <div class="helper-text">
+    People will see this name if you interact with them and they don't have you saved as a contact.
+  </div>
+
+</div>
+
+  <!-- SAVE -->
+  <div class="footer">
+    <div class="bubble save-bubble" id="saveBtn">
+      Save
+    </div>
+  </div>
+
+</div>
+
+<script src="/static/edit_name.js"></script>
+</body>
+</html>

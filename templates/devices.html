@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devices</title>
+  <link rel="stylesheet" href="/static/devices.css">
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <a href="/auth/settings">←</a>
+    <h1>Devices</h1>
+  </div>
+
+  <div class="section-title">Current Device</div>
+
+  <div class="section">
+    <div class="item">
+      <div class="left">
+        <div class="icon">📱</div>
+        <div>
+          <div class="name" id="deviceName">Your Device</div>
+          <div class="meta" id="deviceMeta">Last active: Now</div>
+        </div>
+      </div>
+      <div class="badge">This Device</div>
+    </div>
+  </div>
+
+  <div class="section-title">Active Sessions</div>
+
+  <div class="section">
+    <div class="item">
+      <div class="left">
+        <div class="icon">💻</div>
+        <div>
+          <div class="name">Web Session</div>
+          <div class="meta">Last active: Just now</div>
+        </div>
+      </div>
+      <div class="dots">•••</div>
+    </div>
+
+    <div class="item">
+      <div class="left">
+        <div class="icon">📱</div>
+        <div>
+          <div class="name">Mobile Session</div>
+          <div class="meta">Last active: Yesterday</div>
+        </div>
+      </div>
+      <div class="dots">•••</div>
+    </div>
+  </div>
+
+  <button class="logout">Log Out of All Sessions</button>
+
+  <div class="footer">
+    Account last active: <span id="location">Unknown</span>
+  </div>
+
+</div>
+
+<script src="/static/devices.js"></script>
+</body>
+</html>

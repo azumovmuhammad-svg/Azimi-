@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sado AI - Ёрии Ҳушманд</title>
+    <link rel="stylesheet" href="/static/sado_new.css">
+</head>
+<body>
+
+<div class="sado-app">
+
+    <!-- HEADER -->
+    <header class="sado-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="history.back()">←</button>
+            <div class="ai-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4M12 8h.01"/>
+                </svg>
+            </div>
+            <div class="header-info">
+                <div class="ai-name">Sado AI</div>
+                <div class="ai-status">● Онлайн</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="menu-btn" onclick="clearHistory()" title="Пок кардани таърих">🗑️</button>
+        </div>
+    </header>
+
+    <!-- CHAT BODY -->
+    <div class="chat-container">
+        <div id="chatBody" class="chat-body">
+            <!-- Паёми оғозӣ -->
+            <div class="message ai">
+                <div class="message-content">
+                    Салом! 👋 Ман Sado AI ҳастам - ёрии ҳушманди платформаи шумо.
+                    <br><br>
+                    Ман метавонам ба шумо кӯмак кунам дар:
+                    <ul style="margin: 8px 0; padding-left: 20px;">
+                        <li>🚗 Ёфтани мошинҳои дилхоҳ</li>
+                        <li>📱 Интихоби телефон</li>
+                        <li>🏠 Хона ва амвол</li>
+                        <li>💰 Маслиҳат оиди нархҳо</li>
+                    </ul>
+                    Чӣ кӯмак кунам?
+                </div>
+                <div class="message-time">12:00</div>
+            </div>
+        </div>
+
+        <!-- TYPING INDICATOR -->
+        <div id="typingIndicator" class="typing-indicator" style="display: none;">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span class="typing-text">Sado AI дар ҳоли навиштан...</span>
+        </div>
+
+        <!-- SUGGESTIONS -->
+        <div id="suggestions" class="suggestions-container"></div>
+
+        <!-- INPUT AREA -->
+        <div class="chat-input-container">
+            <div class="chat-input">
+                <button class="attach-btn" title="Иловаи файл">📎</button>
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Паёматонро нависед... (масалан: 'Мошини арзон меҷӯям')"
+                    autocomplete="off"
+                >
+                <button id="sendBtn" class="send-btn" title="Фиристодан">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="input-hint">Enter барои фиристодан</div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/static/sado_new.js"></script>
+</body>
+</html>
+

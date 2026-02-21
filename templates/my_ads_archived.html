@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Архив объявлений - SadoApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/my_ads_archived.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="material-icons-outlined back-btn">arrow_back</span>
+    <span class="header-title">Архив</span>
+    <span class="material-icons-outlined delete-all-btn" onclick="clearAllArchived()">delete_sweep</span>
+  </div>
+
+  <!-- INFO CARD -->
+  <div class="info-card">
+    <span class="material-icons-outlined info-icon">info</span>
+    <div class="info-text">
+      <strong>Архивные объявления</strong>
+      <span>Не отображаются в поиске. Хранятся 30 дней.</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number" id="archivedCount">0</span>
+      <span class="stat-label">В архиве</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" id="expiringCount">0</span>
+      <span class="stat-label">Истекают</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-number" id="totalCount">0</span>
+      <span class="stat-label">Всего</span>
+    </div>
+  </div>
+
+  <!-- ADS LIST -->
+  <div class="ads-container" id="adsContainer">
+    <!-- Ads will be loaded here -->
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState" style="display: none;">
+    <div class="empty-icon">
+      <span class="material-icons-outlined">inventory_2</span>
+    </div>
+    <h3>Архив пуст</h3>
+    <p>Здесь будут объявления, которые вы сняли с публикации</p>
+    <button class="browse-btn" onclick="window.location.href='/feed'">
+      <span class="material-icons-outlined">search</span>
+      Смотреть объявления
+    </button>
+  </div>
+
+</div>
+
+<script src="/static/my_ads_archived.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Пользователи - Admin Panel{% endblock %}
+{% block page_title %}Пользователи{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h3>Все пользователи ({{ total }})</h3>
+        <div class="table-actions">
+            <form method="GET" style="display: flex; gap: 10px;">
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ search or '' }}" 
+                    placeholder="Поиск по имени или телефону"
+                    style="padding: 10px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); width: 300px;"
+                >
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i> Поиск
+                </button>
+                {% if search %}
+                <a href="/admin/users" class="btn btn-secondary">Сбросить</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Пользователь</th>
+                <th>Телефон</th>
+                <th>Объявления</th>
+                <th>Сообщения</th>
+                <th>Дата регистрации</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>#{{ user.id }}</td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <img src="{{ user.avatar if user.avatar else '/static/avatars' }}" style="width: 40px; height: 40px; border-radius: 50%;">
+                     
+                           alt="Avatar" 
+                            style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--accent-blue);"
+                        >
+                        <span>{{ user.username or 'Без имени' }}</span>
+                    </div>
+                </td>
+                <td>{{ user.phone or 'Не указан' }}</td>
+                <td>
+                    <span class="status-badge" style="background: rgba(59, 130, 246, 0.2); color: var(--accent-blue);">
+                        {{ user.posts_count or 0 }}
+                    </span>
+                </td>
+                <td>{{ user.messages_count or 0 }}</td>
+                <td>{{ user.created_at.strftime('%d.%m.%Y') if user.created_at else 'Неизвестно' }}</td>
+                <td>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="/admin/users/{{ user.id }}" class="btn btn-primary btn-sm" title="Просмотр">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <button onclick="blockUser({{ user.id }})" class="btn btn-danger btn-sm" title="Заблокировать">
+                            <i class="fa-solid fa-ban"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="/admin/users?page={{ page - 1 }}{% if search %}&search={{ search }}{% endif %}">‹ Назад</a>
+        {% else %}
+        <span class="disabled">‹ Назад</span>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <span class="current">{{ p }}</span>
+            {% else %}
+            <a href="/admin/users?page={{ p }}{% if search %}&search={{ search }}{% endif %}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <a href="/admin/users?page={{ page + 1 }}{% if search %}&search={{ search }}{% endif %}">Вперёд ›</a>
+        {% else %}
+        <span class="disabled">Вперёд ›</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function blockUser(userId) {
+    if (confirm('Заблокировать пользователя #' + userId + '?')) {
+        fetch('/admin/users/' + userId + '/block', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                alert('Пользователь заблокирован');
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Как разместить объявление - Помощь</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <a href="/help"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Размещение объявления</h1>
+  </div>
+
+  <div class="hero">
+    <div class="hero-icon"><i class="fa-solid fa-circle-plus"></i></div>
+    <div class="hero-text">Пошаговая инструкция</div>
+  </div>
+
+  <div class="section">
+    <div class="step-card">
+      <div class="step-badge">Шаг 1</div>
+      <h3>Нажмите "+" или "Создать"</h3>
+      <p>В нижнем меню нажмите на кнопку с плюсом или найдите "Разместить объявление" в профиле.</p>
+      <div class="step-image-placeholder">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+        <span>Скриншот: Кнопка создания</span>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Шаг 2</div>
+      <h3>Выберите категорию</h3>
+      <p>Выберите подходящую категорию из списка:</p>
+      <div class="category-tags">
+        <span class="cat-tag"><i class="fa-solid fa-car"></i> Авто</span>
+        <span class="cat-tag"><i class="fa-solid fa-mobile-screen"></i> Телефоны</span>
+        <span class="cat-tag"><i class="fa-solid fa-house"></i> Недвижимость</span>
+        <span class="cat-tag"><i class="fa-solid fa-laptop"></i> Техника</span>
+        <span class="cat-tag"><i class="fa-solid fa-shirt"></i> Одежда</span>
+        <span class="cat-tag"><i class="fa-solid fa-couch"></i> Мебель</span>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Шаг 3</div>
+      <h3>Добавьте фото</h3>
+      <p>Загрузите от 3 до 10 фотографий:</p>
+      <div class="photo-tips">
+        <div class="photo-tip good">
+          <i class="fa-solid fa-check"></i>
+          <span>Хорошее освещение</span>
+        </div>
+        <div class="photo-tip good">
+          <i class="fa-solid fa-check"></i>
+          <span>Чистый фон</span>
+        </div>
+        <div class="photo-tip bad">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Размытые фото</span>
+        </div>
+        <div class="photo-tip bad">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Темные снимки</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Шаг 4</div>
+      <h3>Заполните информацию</h3>
+      <div class="form-fields">
+        <div class="field-item">
+          <span class="field-name">Название:</span>
+          <span class="field-example">iPhone 15 Pro Max 256GB</span>
+        </div>
+        <div class="field-item">
+          <span class="field-name">Описание:</span>
+          <span class="field-example">Состояние отличное, полный комплект...</span>
+        </div>
+        <div class="field-item">
+          <span class="field-name">Цена:</span>
+          <span class="field-example">12 000 сомони (торг уместен)</span>
+        </div>
+        <div class="field-item">
+          <span class="field-name">Местоположение:</span>
+          <span class="field-example">Душанбе, центр</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Шаг 5</div>
+      <h3>Укажите контакты</h3>
+      <p>Введите номер телефона и выберите удобный способ связи:</p>
+      <div class="contact-options">
+        <div class="contact-opt"><i class="fa-solid fa-phone"></i> Звонки</div>
+        <div class="contact-opt"><i class="fa-solid fa-comment"></i> Сообщения</div>
+        <div class="contact-opt"><i class="fa-brands fa-telegram"></i> Telegram</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-badge">Шаг 6</div>
+      <h3>Проверьте и опубликуйте</h3>
+      <p>Проверьте все данные и нажмите "Опубликовать". Объявление появится после модерации (обычно в течение 10 минут).</p>
+      <div class="success-notice">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Готово! Ваше объявление создано.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="pro-tips">
+      <h3><i class="fa-solid fa-lightbulb"></i> Советы профи</h3>
+      <ul>
+        <li>Честно указывайте состояние товара</li>
+        <li>Отвечайте на сообщения быстро</li>
+        <li>Обновляйте объявление каждые 3 дня</li>
+        <li>Добавьте видео для дорогих товаров</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="cta-box">
+      <h3>Готовы начать?</h3>
+      <button class="btn-primary" onclick="goTo('/create-post')">
+        <i class="fa-solid fa-plus"></i> Создать объявление
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">azimi Help Center</div>
+
+</div>
+
+<script>
+function goTo(url) {
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
+

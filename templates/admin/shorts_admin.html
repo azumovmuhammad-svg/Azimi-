@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Shorts - Admin Panel{% endblock %}
+{% block page_title %}Видео Shorts{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h3>Все shorts ({{ total }})</h3>
+        <div class="table-actions">
+            <select name="status" style="padding: 10px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary);">
+                <option value="">Все статусы</option>
+                <option value="active">Активные</option>
+                <option value="draft">Черновики</option>
+            </select>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; padding: 24px;">
+        {% for short in shorts %}
+        <div style="background: var(--bg-secondary); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color);">
+            <div style="aspect-ratio: 9/16; background: #000; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-video" style="font-size: 32px; color: var(--text-muted);"></i>
+            </div>
+            <div style="padding: 16px;">
+                <h4 style="margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ short.title or 'Без названия' }}</h4>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">@{{ short.username }}</p>
+                <span class="status-badge status-{{ short.status }}">{{ short.status }}</span>
+                <div style="margin-top: 12px; display: flex; gap: 8px;">
+                    <button onclick="deleteShort({{ short.id }})" class="btn btn-danger btn-sm" style="flex: 1;">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">Нет shorts</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function deleteShort(id) {
+    if (confirm('Удалить short #' + id + '?')) {
+        fetch('/admin/shorts/' + id, { method: 'DELETE' })
+        .then(r => r.json())
+        .then(data => {
+            if (data.status === 'ok') location.reload();
+        });
+    }
+}
+</script>
+{% endblock %}
+

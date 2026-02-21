@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Объявления - Admin Panel{% endblock %}
+{% block page_title %}Объявления{% endblock %}
+
+{% block content %}
+<div class="table-card">
+    <div class="table-header">
+        <h3>Все объявления ({{ total }})</h3>
+        <div class="table-actions">
+            <form method="GET" style="display: flex; gap: 10px;">
+                <select name="status" style="padding: 10px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary);">
+                    <option value="">Все статусы</option>
+                    <option value="draft" {% if status_filter == 'draft' %}selected{% endif %}>Черновик</option>
+                    <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Активные</option>
+                    <option value="sold" {% if status_filter == 'sold' %}selected{% endif %}>Продано</option>
+                    <option value="archived" {% if status_filter == 'archived' %}selected{% endif %}>Архив</option>
+                </select>
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ search or '' }}" 
+                    placeholder="Поиск по названию"
+                    style="padding: 10px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); width: 250px;"
+                >
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i> Фильтр
+                </button>
+                {% if search or status_filter %}
+                <a href="/admin/posts" class="btn btn-secondary">Сбросить</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Фото</th>
+                <th>Название</th>
+                <th>Цена</th>
+                <th>Город</th>
+                <th>Автор</th>
+                <th>Статус</th>
+                <th>Просмотры</th>
+                <th>Звонки</th>
+                <th>Дата</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            <tr>
+                <td>#{{ post.id }}</td>
+                <td>
+                    <div style="width: 60px; height: 60px; background: var(--bg-secondary); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-image" style="color: var(--text-muted);"></i>
+                    </div>
+                </td>
+                <td>{{ post.title or 'Без названия' }}</td>
+                <td>
+                    {% if post.price %}
+                    <strong style="color: var(--accent-green);">{{ "%.0f"|format(post.price) }} {{ post.currency or 'TJS' }}</strong>
+                    {% else %}
+                    <span style="color: var(--text-muted);">Договорная</span>
+                    {% endif %}
+                </td>
+                <td>{{ post.city or 'Не указан' }}</td>
+                <td>{{ post.username }}</td>
+                <td>
+                    <span class="status-badge status-{{ post.status }}">
+                        {{ post.status }}
+                    </span>
+                </td>
+                <td>{{ post.views or 0 }}</td>
+                <td>{{ post.calls or 0 }}</td>
+                <td>{{ post.created_at.strftime('%d.%m.%Y') if post.created_at else 'Неизвестно' }}</td>
+                <td>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="/admin/posts/{{ post.id }}" class="btn btn-primary btn-sm" title="Просмотр">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        {% if post.status == 'draft' %}
+                        <button onclick="approvePost({{ post.id }})" class="btn btn-sm" style="background: var(--accent-green); color: white;" title="Одобрить">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        {% endif %}
+                        <button onclick="deletePost({{ post.id }})" class="btn btn-danger btn-sm" title="Удалить">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="/admin/posts?page={{ page - 1 }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}">‹ Назад</a>
+        {% else %}
+        <span class="disabled">‹ Назад</span>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <span class="current">{{ p }}</span>
+            {% else %}
+            <a href="/admin/posts?page={{ p }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <a href="/admin/posts?page={{ page + 1 }}{% if search %}&search={{ search }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}">Вперёд ›</a>
+        {% else %}
+        <span class="disabled">Вперёд ›</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function approvePost(postId) {
+    if (confirm('Одобрить объявление #' + postId + '?')) {
+        fetch('/admin/posts/' + postId + '/approve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                alert('Объявление одобрено');
+                location.reload();
+            }
+        });
+    }
+}
+
+function deletePost(postId) {
+    if (confirm('Удалить объявление #' + postId + '? Это действие нельзя отменить!')) {
+        fetch('/admin/posts/' + postId, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                alert('Объявление удалено');
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %}
+

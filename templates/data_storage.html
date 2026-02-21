@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data and Storage</title>
+<link rel="stylesheet" href="/static/data_storage.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="back" onclick="history.back()">‹</span>
+    <span class="title">Data and Storage</span>
+  </div>
+
+  <!-- SECTION -->
+  <div class="section">
+
+    <div class="item clickable" onclick="openStorage()">
+      <span>Storage Usage</span>
+      <span class="right">492 MB ›</span>
+    </div>
+
+    <div class="item">
+      <span>Media Auto-Download</span>
+      <span class="right">Off ›</span>
+    </div>
+
+    <div class="item">
+      <span>When using mobile data</span>
+      <span class="right">Off ›</span>
+    </div>
+
+    <div class="item">
+      <span>When connected on Wi-Fi</span>
+      <span class="right">On ›</span>
+    </div>
+
+    <div class="item">
+      <span>When roaming</span>
+      <span class="right">Off ›</span>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="item">
+      <span>Cache</span>
+      <span class="right">211 MB ›</span>
+    </div>
+
+    <div class="item">
+      <span>Keep Media</span>
+      <span class="right">Forever ›</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="item toggle">
+      <span>App Icon</span>
+      <label class="switch">
+        <input type="checkbox" id="iconToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <p class="hint">
+    Blocked contacts don't know you blocked them.
+  </p>
+
+</div>
+
+<script src="/static/data_storage.js"></script>
+</body>
+</html>

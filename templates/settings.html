@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Настройки - SadoApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/settings.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="material-icons-outlined back-btn">arrow_back</span>
+    <span class="header-title">Настройки</span>
+  </div>
+
+  <!-- PROFILE CARD -->
+  <div class="profile-card" id="profileBtn">
+    <img id="avatar" src="/static/default-avatar.png" alt="Avatar">
+    <div class="profile-info">
+      <div class="profile-name" id="username">Загрузка...</div>
+      <div class="profile-phone" id="phone"></div>
+      <div class="profile-edit">Нажмите для редактирования</div>
+    </div>
+    <span class="material-icons-outlined">chevron_right</span>
+  </div>
+
+  <!-- MY ADS SECTION -->
+  <div class="section-title">Мои объявления</div>
+  <div class="menu">
+    <div class="item" data-link="/auth/my-ads/active">
+      <span class="material-icons-outlined item-icon" style="color: #4caf50;">check_circle</span>
+      <span class="item-text">Активные</span>
+      <span class="badge" id="activeCount">0</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+    
+    <div class="item" data-link="/auth/my-ads/archived">
+      <span class="material-icons-outlined item-icon" style="color: #ff9800;">archive</span>
+      <span class="item-text">Архив</span>
+      <span class="badge" id="archivedCount">0</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+  </div>
+
+  <!-- COMMUNICATION -->
+  <div class="section-title">Коммуникация</div>
+  <div class="menu">
+    <div class="item" data-link="/auth/history">
+      <span class="material-icons-outlined item-icon" style="color: #2196f3;">chat</span>
+      <span class="item-text">Сообщения</span>
+      <span class="badge badge-new" id="msgCount" style="display: none;">NEW</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+    
+    <div class="item" data-link="/auth/notifications">
+      <span class="material-icons-outlined item-icon" style="color: #ff5722;">notifications</span>
+      <span class="item-text">Уведомления</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="section-title">Настройки приложения</div>
+  <div class="menu">
+    <div class="item" data-link="/auth/appearance">
+      <span class="material-icons-outlined item-icon" style="color: #9c27b0;">palette</span>
+      <span class="item-text">Внешний вид</span>
+      <span class="item-value" id="themeValue">Тёмная</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+    
+    <div class="item" data-link="/auth/language">
+      <span class="material-icons-outlined item-icon" style="color: #00bcd4;">language</span>
+      <span class="item-text">Язык и регион</span>
+      <span class="item-value" id="langValue">Русский</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+  </div>
+
+  <!-- SECURITY -->
+  <div class="section-title">Безопасность</div>
+  <div class="menu">
+    <div class="item" data-link="/auth/privacy">
+      <span class="material-icons-outlined item-icon" style="color: #4caf50;">security</span>
+      <span class="item-text">Приватность</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+  </div>
+
+  <!-- HELP -->
+  <div class="section-title">Помощь</div>
+  <div class="menu">
+    <div class="item" data-link="/auth/help">
+      <span class="material-icons-outlined item-icon" style="color: #ff9800;">help_outline</span>
+      <span class="item-text">Помощь и поддержка</span>
+      <span class="material-icons-outlined">chevron_right</span>
+    </div>
+  </div>
+
+  <!-- LOGOUT -->
+  <div class="logout-section">
+    <button class="logout-btn" id="logoutBtn">
+      <span class="material-icons-outlined">logout</span>
+      Выйти из аккаунта
+    </button>
+  </div>
+
+</div>
+
+<script src="/static/settings.js"></script>
+</body>
+</html>
+

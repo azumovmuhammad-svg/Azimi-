@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Short</title>
+
+  <link rel="stylesheet" href="/static/add-short.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+</head>
+<body>
+
+<header class="topbar">
+  <span class="material-icons-outlined back" onclick="history.back()">arrow_back</span>
+  <h1>Новый Short</h1>
+</header>
+
+<!-- ⭐ Боварӣ ҳосил кунед, ки data-short-id ҳаст -->
+<main class="content" data-short-id="{{ short_id }}">
+
+  <!-- VIDEO PREVIEW -->
+  <div class="video-wrapper">
+    <video id="videoPreview" controls playsinline style="max-width: 100%; border-radius: 12px;"></video>
+  </div>
+
+  <!-- FORM -->
+  <div class="form">
+    <div class="field">
+      <input type="text" id="title" placeholder="Название">
+      <span class="underline"></span>
+    </div>
+
+    <div class="field">
+      <textarea id="description" placeholder="Описание"></textarea>
+      <span class="underline"></span>
+    </div>
+
+    <div class="field">
+      <input type="number" id="price" placeholder="Цена">
+      <span class="underline"></span>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <button id="publishBtn">Опубликовать</button>
+</footer>
+
+<script src="/static/add-short.js"></script>
+</body>
+</html>
+

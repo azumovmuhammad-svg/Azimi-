@@ -1,0 +1,299 @@
+/* APPEARANCE CSS - SadoMarket */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: linear-gradient(180deg, #0b1625, #0e1c2e);
+  color: #fff;
+  min-height: 100vh;
+}
+
+.phone {
+  max-width: 100%;
+  padding-bottom: 40px;
+}
+
+.screen {
+  padding: 0 16px;
+}
+
+/* HEADER */
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  margin: 0 -16px;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, #0b1625, #0e1c2e);
+  z-index: 100;
+}
+
+.back {
+  font-size: 28px;
+  cursor: pointer;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+  font-weight: 300;
+}
+
+.back:active {
+  background: rgba(255,255,255,0.1);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* CARD */
+.card {
+  margin: 16px 0;
+  background: rgba(27, 36, 51, 0.6);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row span {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row span i {
+  color: #6fa8ff;
+  width: 20px;
+}
+
+.arrow {
+  cursor: pointer;
+}
+
+.arrow:after {
+  content: '›';
+  font-size: 20px;
+  color: #90a4ae;
+  margin-left: 8px;
+}
+
+/* COLOR BOX */
+.color-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+/* PREVIEW */
+.preview {
+  margin: 16px 0;
+  padding: 16px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 12px;
+}
+
+.preview-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.preview-img {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6fa8ff, #9c27b0);
+  border-radius: 8px;
+}
+
+.preview-text {
+  flex: 1;
+}
+
+.preview-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.preview-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #6fa8ff;
+}
+
+/* LABEL */
+.label {
+  font-size: 13px;
+  color: #90a4ae;
+  margin: 16px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* RANGE SLIDER */
+input[type="range"] {
+  width: 100%;
+  height: 4px;
+  background: #37474f;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+  margin: 8px 0 16px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #6fa8ff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ICON ROW */
+.icon-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #90a4ae;
+}
+
+.icon.active {
+  background: #6fa8ff;
+  color: #0b1625;
+}
+
+.icon:active {
+  transform: scale(0.95);
+}
+
+.shape {
+  margin-left: auto;
+  font-size: 14px;
+  color: #90a4ae;
+}
+
+/* RIGHT */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sub {
+  font-size: 14px;
+  color: #90a4ae;
+}
+
+/* SWITCH */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #37474f;
+  transition: .3s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #6fa8ff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* PREVIEW MESSAGE */
+.preview-message {
+  margin: 24px 16px;
+  padding: 16px;
+  background: rgba(111, 168, 255, 0.1);
+  border: 1px solid rgba(111, 168, 255, 0.2);
+  border-radius: 12px;
+  text-align: center;
+  color: #6fa8ff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.preview-message i {
+  font-size: 16px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.phone > * {
+  animation: fadeIn 0.4s ease;
+}

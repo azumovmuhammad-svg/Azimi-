@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block title %}Дашборд - Admin Panel{% endblock %}
+{% block page_title %}Дашборд{% endblock %}
+
+{% block content %}
+<!-- STATS CARDS -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue">
+            <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ stats.total_users }}</h3>
+            <p>Всего пользователей</p>
+            <span class="stat-change positive">+{{ stats.new_users_today }} сегодня</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon green">
+            <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ stats.active_posts }}</h3>
+            <p>Активных объявлений</p>
+            <span class="stat-change">из {{ stats.total_posts }} всего</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon orange">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ stats.draft_posts }}</h3>
+            <p>На модерации</p>
+            <span class="stat-change">требуют проверки</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon purple">
+            <i class="fa-solid fa-archive"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ stats.archived_posts }}</h3>
+            <p>В архиве</p>
+            <span class="stat-change">неактивные</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon cyan">
+            <i class="fa-solid fa-message"></i>
+        </div>
+        <div class="stat-info">
+            <h3>{{ stats.total_messages }}</h3>
+            <p>Сообщений</p>
+            <span class="stat-change positive">+{{ stats.messages_today }} сегодня</span>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon red">
+            <i class="fa-solid fa-eye"></i>
+        </div>
+        <div class="stat-info">
+            <h3>--</h3>
+            <p>Просмотров сегодня</p>
+            <span class="stat-change">в разработке</span>
+        </div>
+    </div>
+</div>
+
+<!-- CHARTS -->
+<div class="charts-grid">
+    <div class="chart-card">
+        <h3>Активность за 7 дней</h3>
+        <div class="chart-container">
+            <canvas id="activityChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>Распределение объявлений</h3>
+        <div class="chart-container">
+            <canvas id="postsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- RECENT USERS -->
+<div class="table-card" style="margin-bottom: 30px;">
+    <div class="table-header">
+        <h3>Последние пользователи</h3>
+        <a href="/admin/users" class="btn btn-secondary btn-sm">Все пользователи</a>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Телефон</th>
+                <th>Дата регистрации</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in recent_users %}
+            <tr>
+                <td>#{{ user.id }}</td>
+                <td>{{ user.username or 'Без имени' }}</td>
+                <td>{{ user.phone or 'Нет телефона' }}</td>
+                <td>{{ user.created_at.strftime('%d.%m.%Y %H:%M') if user.created_at else 'Неизвестно' }}</td>
+                <td>
+                    <a href="/admin/users/{{ user.id }}" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-eye"></i> Просмотр
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- RECENT POSTS -->
+<div class="table-card">
+    <div class="table-header">
+        <h3>Последние объявления</h3>
+        <a href="/admin/posts" class="btn btn-secondary btn-sm">Все объявления</a>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Статус</th>
+                <th>Дата</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in recent_posts %}
+            <tr>
+                <td>#{{ post.id }}</td>
+                <td>{{ post.title or 'Без названия' }}</td>
+                <td>{{ post.username }}</td>
+                <td>
+                    <span class="status-badge status-{{ post.status }}">
+                        {{ post.status }}
+                    </span>
+                </td>
+                <td>{{ post.created_at.strftime('%d.%m.%Y') if post.created_at else 'Неизвестно' }}</td>
+                <td>
+                    <a href="/admin/posts/{{ post.id }}" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-eye"></i> Просмотр
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Activity Chart
+const activityCtx = document.getElementById('activityChart').getContext('2d');
+const activityChart = new Chart(activityCtx, {
+    type: 'line',
+    data: {
+        labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+        datasets: [{
+            label: 'Новые пользователи',
+            data: [12, 19, 15, 25, 22, 30, 28],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true
+        }, {
+            label: 'Новые объявления',
+            data: [8, 15, 12, 20, 18, 25, 22],
+            borderColor: '#06b6d4',
+            backgroundColor: 'rgba(6, 182, 212, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: { color: '#94a3b8' }
+            }
+        },
+        scales: {
+            y: {
+                grid: { color: '#2d3748' },
+                ticks: { color: '#94a3b8' }
+            },
+            x: {
+                grid: { color: '#2d3748' },
+                ticks: { color: '#94a3b8' }
+            }
+        }
+    }
+});
+
+// Posts Distribution Chart
+const postsCtx = document.getElementById('postsChart').getContext('2d');
+const postsChart = new Chart(postsCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Активные', 'На модерации', 'Архив', 'Отклоненные'],
+        datasets: [{
+            data: [{{ stats.active_posts }}, {{ stats.draft_posts }}, {{ stats.archived_posts }}, 0],
+            backgroundColor: [
+                '#10b981',
+                '#f59e0b',
+                '#64748b',
+                '#ef4444'
+            ],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: { 
+                    color: '#94a3b8',
+                    padding: 20
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Контакты - SadoApp</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="/static/add3.css">
+</head>
+<body>
+
+<div class="app" data-post-id="{{ post_id }}">
+
+  <!-- HEADER -->
+  <div class="header">
+    <button class="back-btn" onclick="history.back()">
+      <span class="material-icons-outlined">arrow_back</span>
+    </button>
+    <span class="header-title">Новое объявление</span>
+    <button class="close-btn" onclick="exitPost()">
+      <span class="material-icons-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="progress-step completed">
+      <span class="material-icons-outlined">check</span>
+    </div>
+    <div class="progress-line active"></div>
+    <div class="progress-step completed">
+      <span class="material-icons-outlined">check</span>
+    </div>
+    <div class="progress-line active"></div>
+    <div class="progress-step active">3</div>
+    <div class="progress-line"></div>
+    <div class="progress-step">4</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    
+    <div class="step-title">Контакты</div>
+    <div class="step-subtitle">Как с вами связаться?</div>
+
+    <!-- LOCATION SECTION -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="material-icons-outlined">location_on</span>
+        <span>Местоположение</span>
+      </div>
+      
+      <div class="field-group">
+        <label class="field-label">Город *</label>
+        <button class="selector-btn" id="cityBtn" onclick="openCityModal()">
+          <span class="selector-text">Выберите город</span>
+          <span class="material-icons-outlined">chevron_right</span>
+        </button>
+      </div>
+
+      <div class="field-group" id="districtGroup" style="display: none;">
+        <label class="field-label">Район</label>
+        <button class="selector-btn" id="districtBtn" onclick="openDistrictModal()">
+          <span class="selector-text">Выберите район</span>
+          <span class="material-icons-outlined">chevron_right</span>
+        </button>
+      </div>
+
+      <!-- MAP PREVIEW -->
+      <div class="map-preview" id="mapPreview" style="display: none;">
+        <div class="map-placeholder">
+          <span class="material-icons-outlined">map</span>
+          <span>Местоположение выбрано</span>
+        </div>
+        <button class="change-location-btn" onclick="resetLocation()">
+          Изменить
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTACT SECTION -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="material-icons-outlined">contact_phone</span>
+        <span>Контактные данные</span>
+      </div>
+      
+      <div class="field-group">
+        <label class="field-label">Телефон *</label>
+        <div class="phone-input-wrapper">
+          <span class="country-code">+992</span>
+          <input type="tel" class="phone-input" id="phoneInput" 
+                 placeholder="XX XXX XX XX" maxlength="12">
+        </div>
+        <div class="input-hint">Номер будет виден покупателям</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Имя контактного лица *</label>
+        <input type="text" class="text-input" id="nameInput" 
+               placeholder="Как к вам обращаться?">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Telegram (необязательно)</label>
+        <div class="telegram-input-wrapper">
+          <span class="telegram-prefix">@</span>
+          <input type="text" class="text-input telegram-input" id="telegramInput" 
+                 placeholder="username">
+        </div>
+      </div>
+    </div>
+
+    <!-- PREFERENCES SECTION -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="material-icons-outlined">tune</span>
+        <span>Предпочтения</span>
+      </div>
+      
+      <label class="toggle-item">
+        <div class="toggle-info">
+          <span class="toggle-title">Принимать сообщения</span>
+          <span class="toggle-desc">Покупатели смогут писать в чат</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="messagesToggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </label>
+
+      <label class="toggle-item">
+        <div class="toggle-info">
+          <span class="toggle-title">Показывать Telegram</span>
+          <span class="toggle-desc">Ссылка на ваш Telegram</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="showTelegramToggle">
+          <span class="slider round"></span>
+        </label>
+      </label>
+
+      <label class="toggle-item">
+        <div class="toggle-info">
+          <span class="toggle-title">Торг уместен</span>
+          <span class="toggle-desc">Укажите, если готовы снизить цену</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="bargainToggle">
+          <span class="slider round"></span>
+        </label>
+      </label>
+    </div>
+
+    <!-- SAFETY TIP -->
+    <div class="safety-tip">
+      <span class="material-icons-outlined">security</span>
+      <div>
+        <strong>Безопасность</strong>
+        <p>Не отправляйте предоплату незнакомцам. Встречайтесь в людных местах.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <button class="preview-btn" onclick="showPreview()">
+      <span class="material-icons-outlined">visibility</span>
+      Предпросмотр
+    </button>
+    <button class="next-btn" id="continueBtn" disabled>
+      Далее
+      <span class="material-icons-outlined">arrow_forward</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- CITY MODAL -->
+<div class="modal" id="cityModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Выберите город</h3>
+      <button class="modal-close" onclick="closeModals()">
+        <span class="material-icons-outlined">close</span>
+      </button>
+    </div>
+    <div class="search-box">
+      <span class="material-icons-outlined">search</span>
+      <input type="text" placeholder="Поиск города..." id="citySearch">
+    </div>
+    <div class="city-list" id="cityList"></div>
+  </div>
+</div>
+
+<!-- DISTRICT MODAL -->
+<div class="modal" id="districtModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="districtModalTitle">Район</h3>
+      <button class="modal-close" onclick="closeModals()">
+        <span class="material-icons-outlined">close</span>
+      </button>
+    </div>
+    <div class="city-list" id="districtList"></div>
+  </div>
+</div>
+
+<script src="/static/add3.js"></script>
+</body>
+</html>
+

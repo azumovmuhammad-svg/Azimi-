@@ -1,0 +1,237 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: linear-gradient(180deg, #0b1625, #0e1c2e);
+  color: #fff;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 100%;
+  padding-bottom: 40px;
+}
+
+/* HEADER */
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, #0b1625, #0e1c2e);
+  z-index: 100;
+}
+
+.back-btn {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.back-btn:active {
+  background: rgba(255,255,255,0.1);
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* ⭐ PROFILE CARD - ИСЛОҲШУДА */
+.profile-card {
+  margin: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(111,168,255,0.1), rgba(111,168,255,0.05));
+  border-radius: 20px;
+  border: 1px solid rgba(111,168,255,0.15);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.profile-card:active {
+  transform: scale(0.98);
+  background: linear-gradient(135deg, rgba(111,168,255,0.15), rgba(111,168,255,0.08));
+}
+
+/* ⭐ АВАТАР - ХУРДТАР ВА ДОИРА */
+.profile-card img {
+  width: 56px;        /* Хурдтар */
+  height: 56px;       /* Хурдтар */
+  border-radius: 50%; /* Доира */
+  object-fit: cover;
+  border: 2px solid #6fa8ff;
+  flex-shrink: 0;     /* Рафтан намешавад */
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;       /* Барои ellipsis */
+}
+
+/* ⭐ НОМ - КАЛОНТАР */
+.profile-name {
+  font-size: 18px;    /* Калон */
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ⭐ РАҚАМ - ХУРДТАР, РАНГИ ХОКИСТАР */
+.profile-phone {
+  font-size: 14px;    /* Хурдтар */
+  color: #90a4ae;     /* Хокистар */
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+/* ⭐ ТАВСИФ - ХУРДТАРИН */
+.profile-edit {
+  font-size: 12px;    /* Хурд */
+  color: #6fa8ff;     /* Синӣ */
+  font-weight: 500;
+}
+
+.profile-card > .material-icons-outlined {
+  font-size: 20px;
+  color: #90a4ae;
+  flex-shrink: 0;
+}
+
+/* SECTION TITLE */
+.section-title {
+  margin: 24px 16px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #90a4ae;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* MENU */
+.menu {
+  margin: 0 16px;
+  background: rgba(27, 36, 51, 0.6);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.item {
+  height: 56px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:active {
+  background: rgba(255,255,255,0.05);
+}
+
+.item-icon {
+  font-size: 24px !important;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-text {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.item-value {
+  font-size: 14px;
+  color: #6fa8ff;
+  margin-right: 4px;
+}
+
+.badge {
+  background: #6fa8ff;
+  color: #0b1625;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.badge-new {
+  background: #f44336;
+  color: #fff;
+  font-size: 10px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+/* LOGOUT */
+.logout-section {
+  margin: 32px 16px;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 16px;
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 16px;
+  color: #f44336;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:active {
+  background: rgba(244, 67, 54, 0.2);
+  transform: scale(0.98);
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.app > * {
+  animation: fadeIn 0.4s ease;
+}
+
+/* LOADING STATE */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+

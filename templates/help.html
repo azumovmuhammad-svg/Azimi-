@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Помощь - SadoMarket</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="/auth/settings"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Помощь и поддержка</h1>
+  </div>
+
+  <!-- AVATAR / HERO -->
+  <div class="hero">
+     <div class="hero-icon"><i class="fa-solid fa-headset"></i></div>
+    <div class="hero-text">Как мы можем вам помочь?</div>
+  </div>
+
+  <!-- SEARCH BOX -->
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" class="search" placeholder="Поиск вопроса..." id="searchInput">
+  </div>
+
+  <!-- Категории -->
+  <div class="section-title">Категории</div>
+  <div class="category-grid">
+    <div class="category-item" onclick="goTo('/help/buying')">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span>Покупка</span>
+    </div>
+    <div class="category-item" onclick="goTo('/help/selling')">
+      <i class="fa-solid fa-store"></i>
+      <span>Продажа</span>
+    </div>
+    <div class="category-item" onclick="goTo('/help/payments')">
+      <i class="fa-solid fa-credit-card"></i>
+      <span>Оплата</span>
+    </div>
+    <div class="category-item" onclick="goTo('/help/delivery')">
+      <i class="fa-solid fa-truck"></i>
+      <span>Доставка</span>
+    </div>
+  </div>
+
+  <!-- Популярные вопросы -->
+  <div class="section">
+    <div class="section-title">Популярные вопросы</div>
+
+    <div class="item clickable" onclick="goTo('/help/how-to-post')">
+      <div class="left">
+        <i class="fa-solid fa-circle-plus icon"></i>
+        <span>Как разместить объявление?</span>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/help/how-to-buy')">
+      <div class="left">
+        <i class="fa-solid fa-hand-holding-dollar icon"></i>
+        <span>Как безопасно купить?</span>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/help/safety')">
+      <div class="left">
+        <i class="fa-solid fa-shield-halved icon"></i>
+        <span>Правила безопасности</span>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/help/scam')">
+      <div class="left">
+        <i class="fa-solid fa-triangle-exclamation icon"></i>
+        <span>Как не попасться на мошенничество?</span>
+      </div>
+      <i class="fa-solid fa-chevron-right"></i>
+    </div>
+  </div>
+
+  <!-- Основное -->
+  <div class="section">
+    <div class="section-title">Основное</div>
+
+    <div class="item clickable" onclick="goTo('/help/center')">
+      <div class="left">
+        <i class="fa-solid fa-book-open icon"></i>
+        <span>Центр помощи</span>
+      </div>
+      <span class="badge">Новое</span>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/help/contact')">
+      <div class="left">
+        <i class="fa-solid fa-envelope icon"></i>
+        <span>Связаться с поддержкой</span>
+      </div>
+    </div>
+
+    <div class="item clickable" onclick="goTo('/help/privacy2')">
+      <div class="left">
+        <i class="fa-solid fa-file-contract icon"></i>
+        <span>Правила и конфиденциальность</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Социальные сети -->
+  <div class="section">
+    <div class="section-title">Мы в соцсетях</div>
+
+    <div class="item clickable" onclick="openLink('telegram')">
+      <div class="left">
+        <i class="fa-brands fa-telegram icon" style="color: #0088cc;"></i>
+        <span>Telegram</span>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square"></i>
+    </div>
+
+    <div class="item clickable" onclick="openLink('instagram')">
+      <div class="left">
+        <i class="fa-brands fa-instagram icon" style="color: #e4405f;"></i>
+        <span>Instagram</span>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square"></i>
+    </div>
+  </div>
+
+  <!-- Сообщить о проблеме -->
+  <div class="section">
+    <div class="item danger clickable" onclick="goTo('/help/report')">
+      <div class="left">
+        <i class="fa-solid fa-flag icon"></i>
+        <span>Сообщить о проблеме</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION -->
+  <div class="footer">SadoMarket v1.0.0</div>
+
+</div>
+
+<script src="/static/help.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Покупка - Помощь</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <a href="/help"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Покупка</h1>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+    <div class="hero-text">Как купить на azimi объявление</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="section">
+    <div class="section-title">Пошаговая инструкция</div>
+
+    <div class="help-card">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>Найдите товар</h3>
+        <p>Используйте поиск или категории для нахождения нужного товара. Можно фильтровать по цене, местоположению и состоянию.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>Изучите объявление</h3>
+        <p>Внимательно прочитайте описание, посмотрите все фото. Обратите внимание на рейтинг продавца и отзывы.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>Свяжитесь с продавцом</h3>
+        <p>Напишите сообщение или позвоните. Уточните детали: состояние, возможен ли торг, где можно посмотреть.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h3>Осмотрите товар</h3>
+        <p>Встретьтесь в безопасном месте. Проверьте работоспособность и соответствие описанию.</p>
+      </div>
+    </div>
+
+    <div class="help-card">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <h3>Оплатите</h3>
+        <p>Рассчитайтесь удобным способом. Получите чек или расписку о покупке.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section">
+    <div class="section-title">Советы покупателю</div>
+
+    <div class="tip-item">
+      <i class="fa-solid fa-lightbulb tip-icon"></i>
+      <div class="tip-text">
+        <strong>Сравните цены</strong>
+        <p>Посмотрите похожие объявления, чтобы понять рыночную цену.</p>
+      </div>
+    </div>
+
+    <div class="tip-item">
+      <i class="fa-solid fa-shield-halved tip-icon"></i>
+      <div class="tip-text">
+        <strong>Проверьте продавца</strong>
+        <p>Новые профили без отзывов - повод быть внимательнее.</p>
+      </div>
+    </div>
+
+    <div class="tip-item">
+      <i class="fa-solid fa-camera tip-icon"></i>
+      <div class="tip-text">
+        <strong>Попросите больше фото</strong>
+        <p>Если чего-то не видно на фото - попросите прислать дополнительные.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="section">
+    <div class="cta-box">
+      <h3>Остались вопросы?</h3>
+      <p>Свяжитесь с нашей поддержкой</p>
+      <button class="btn-primary" onclick="goTo('/help/contact')">
+        <i class="fa-solid fa-envelope"></i> Написать в поддержку
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">azimi  Help Center</div>
+
+</div>
+
+<script>
+function goTo(url) {
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
+

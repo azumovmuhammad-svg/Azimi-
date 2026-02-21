@@ -1,0 +1,586 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: linear-gradient(180deg, #0b1625, #0e1c2e);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+.top {
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, #0b1625, #0e1c2e);
+}
+
+.search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1b2433;
+  padding: 10px 14px;
+  border-radius: 20px;
+  opacity: 0.9;
+  transition: all 0.3s;
+}
+
+.search:focus-within {
+  opacity: 1;
+  box-shadow: 0 0 0 2px #6fa8ff;
+}
+
+.search input {
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 15px;
+}
+
+/* ===== CATEGORIES ===== */
+.categories-scroll {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: 60px;
+  z-index: 90;
+  background: linear-gradient(180deg, #0e1c2e, transparent);
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category-item {
+  min-width: 72px;
+  height: 90px;
+  background: linear-gradient(180deg, #0b1a2d, #081425);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #cfe2ff;
+  font-size: 11px;
+  text-align: center;
+  flex-shrink: 0;
+  gap: 6px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.category-item:active {
+  transform: scale(0.96);
+}
+
+.category-item.active {
+  background: linear-gradient(180deg, #1a4fa3, #103a73);
+  border-color: #6fa8ff;
+  box-shadow: 0 0 20px rgba(111, 168, 255, 0.3);
+}
+
+.cat-icon {
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(1.2);
+  transition: transform 0.3s;
+}
+
+.category-item:active .cat-icon {
+  transform: scale(1.1);
+}
+
+/* ⭐ ICONS аз Flaticon (CDN) */
+.cat-icon.home        { background-image: url("https://cdn-icons-png.flaticon.com/512/1946/1946436.png"); }
+.cat-icon.car         { background-image: url("https://cdn-icons-png.flaticon.com/512/3089/3089803.png"); }
+.cat-icon.electronics { background-image: url("https://cdn-icons-png.flaticon.com/512/3659/3659898.png"); }
+.cat-icon.accessories { background-image: url("https://cdn-icons-png.flaticon.com/512/1170/1170678.png"); }
+.cat-icon.services    { background-image: url("https://cdn-icons-png.flaticon.com/512/6863/6863174.png"); }
+.cat-icon.home-garden { background-image: url("https://cdn-icons-png.flaticon.com/512/2913/2913465.png"); }
+.cat-icon.work        { background-image: url("https://cdn-icons-png.flaticon.com/512/2910/2910791.png"); }
+.cat-icon.business    { background-image: url("https://cdn-icons-png.flaticon.com/512/1086/1086933.png"); }
+.cat-icon.clothes     { background-image: url("https://cdn-icons-png.flaticon.com/512/2331/2331716.png"); }
+.cat-icon.all         { background-image: url("https://cdn-icons-png.flaticon.com/512/2099/2099058.png"); }
+
+/* ===== ADS ===== */
+.ads-wrapper {
+  padding: 10px 0 6px;
+  overflow: hidden;
+}
+
+.ads-track {
+  display: flex;
+  gap: 12px;
+  padding-left: 12px;
+  animation: ads-scroll 22s linear infinite;
+}
+
+.ad-card {
+  min-width: 280px;
+  height: 140px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: #1b2433;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.ad-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.ad-card:active img {
+  transform: scale(1.05);
+}
+
+.ad-label {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 11px;
+  background: rgba(0,0,0,0.7);
+  padding: 4px 10px;
+  border-radius: 12px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+@keyframes ads-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===== FEED ===== */
+.feed {
+  flex: 1;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding-bottom: 100px; /* ⭐ Ҷой барои bottom nav */
+}
+
+/* ⭐ SKELETON LOADING */
+.skeleton-card {
+  background: #1b2433;
+  border-radius: 16px;
+  overflow: hidden;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(90deg, #1b2433 25%, #2a3a4d 50%, #1b2433 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+  height: 60px;
+  margin: 10px;
+  background: linear-gradient(90deg, #1b2433 25%, #2a3a4d 50%, #1b2433 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ===== REAL CARDS ===== */
+.card {
+  background: #1b2433;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+  cursor: pointer;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card-body {
+  padding: 12px;
+}
+
+.price {
+  color: #6fa8ff;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.title {
+  margin: 6px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meta {
+  font-size: 12px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #90a4ae;
+  margin-top: 8px;
+}
+
+/* ===== PULL TO REFRESH ===== */
+.pull-refresh {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: rgba(111, 168, 255, 0.9);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  z-index: 200;
+  transition: transform 0.3s;
+  box-shadow: 0 4px 20px rgba(111, 168, 255, 0.4);
+}
+
+.pull-refresh.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+.pull-refresh span:first-child {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  background: rgba(15, 28, 45, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  opacity: 0.6;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.nav-item span {
+  font-size: 24px;
+  transition: transform 0.3s;
+}
+
+.nav-item:active span {
+  transform: scale(0.9);
+}
+
+.nav-item.active {
+  opacity: 1;
+  color: #6fa8ff;
+}
+
+.nav-item.active span {
+  transform: translateY(-2px);
+}
+
+.nav-item.add {
+  background: linear-gradient(135deg, #2f5f87, #1a4fa3);
+  padding: 14px;
+  border-radius: 50%;
+  color: #fff;
+  opacity: 1;
+  box-shadow: 0 4px 15px rgba(47, 95, 135, 0.4);
+  margin-top: -20px;
+}
+
+.nav-item.add:active {
+  transform: scale(0.95);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b1625;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1b2433;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3a4d;
+}
+
+
+/* Дар feed.css - LIKE-ро иваз кунед */
+
+.card {
+  position: relative;
+  background: #1b2433;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+}
+
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1; /* Мураббаъ */
+  overflow: hidden;
+}
+
+.card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.card:active .card-image-wrapper img {
+  transform: scale(1.02);
+}
+
+/* ⭐ LIKE ДАР ПОЁНИ РАСМ */
+.like-btn {
+  position: absolute;
+  bottom: 10px;  /* Поён */
+  right: 10px;   /* Рост */
+  background: rgba(0, 0, 0, 0.4); /* Шаффоф */
+  backdrop-filter: blur(4px);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s;
+}
+
+.like-btn span {
+  font-size: 20px;
+  color: #fff; /* Сафед */
+  transition: all 0.3s;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ⭐ ПАС АЗ КЛИК - СУРХ */
+.like-btn.liked {
+  background: rgba(255, 71, 87, 0.9); /* Сурх шаффоф */
+}
+
+.like-btn.liked span {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Аниматсия */
+.like-btn:active {
+  transform: scale(0.9);
+}
+
+.like-btn.animating span {
+  animation: heartBeat 0.4s ease;
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Дар feed.css - SHORTS-ро иваз кунед */
+
+.shorts-wrapper {
+  grid-column: span 2;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 20px;
+  padding: 12px;
+  margin: 12px 0;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+.shorts-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #ff6b6b;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.shorts-header span:first-child {
+  font-size: 24px;
+  color: #ff4757;
+}
+
+/* 2x2 грид - МИСЛИ ПОСТҲО */
+.shorts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 дар рад */
+  gap: 12px;
+}
+
+/* Андозаи пост */
+.shorts-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0b1625;
+  aspect-ratio: 1/1.2; /* Мисли постҳои оддӣ */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.shorts-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.shorts-item:active video {
+  transform: scale(1.05);
+}
+
+/* Play button дар марказ */
+.shorts-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.shorts-item:active .shorts-overlay {
+  background: rgba(0,0,0,0.4);
+}
+
+.shorts-overlay span {
+  font-size: 32px; /* Хурдтар */
+  color: #fff;
+  opacity: 0.9;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* Views дар поён */
+.shorts-views {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.shorts-views::before {
+  content: "▶";
+  font-size: 10px;
+}

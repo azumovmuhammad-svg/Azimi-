@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SadoApp - Объявление</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="/static/post.css">
+</head>
+<body>
+
+<div class="post-page">
+
+  <!-- TOP BAR -->
+  <div class="post-topbar">
+    <button class="back-btn" onclick="history.back()">
+      <span class="material-icons-outlined">arrow_back</span>
+      Назад
+    </button>
+    <div class="post-icons">
+      <button class="favorite-btn" onclick="toggleFavorite()">
+        <span class="material-icons-outlined">favorite_border</span>
+      </button>
+      <button class="share-btn" onclick="sharePost()">
+        <span class="material-icons-outlined">share</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- IMAGE GALLERY -->
+  <div class="post-gallery">
+    <div class="gallery-container" id="galleryContainer">
+      <!-- Images loaded via JS -->
+    </div>
+    <div class="gallery-counter" id="galleryCounter">1 / 1</div>
+    <div class="gallery-dots" id="galleryDots"></div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="post-actions">
+    <a href="#" class="action-btn call" id="callBtn">
+      <span class="material-icons-outlined">phone</span>
+      Позвонить
+    </a>
+    <button class="action-btn message" onclick="openChat()">
+      <span class="material-icons-outlined">chat</span>
+      Написать
+    </button>
+  </div>
+
+  <!-- INFO SECTION -->
+  <div class="post-info">
+    <h1 class="post-title" id="postTitle">Загрузка...</h1>
+    <div class="post-meta">
+      <span class="meta-item location" id="postLocation">Город</span>
+      <span class="meta-item time" id="postTime">Сегодня</span>
+    </div>
+    
+    <!-- === ИЛОВА: Атрибутҳо (марка, модел, ҳофиза...) === -->
+    <div class="attributes-section" id="attributesSection">
+      <h3 class="section-title">Характеристики</h3>
+      <div class="attributes-container" id="attributesContainer">
+        <!-- Attributes loaded via JS -->
+      </div>
+    </div>
+    
+    <div class="post-description" id="postDescription">
+      Описание объявления...
+    </div>
+  </div>
+
+  <!-- DELIVERY INFO -->
+  <div class="delivery-card">
+    <div class="delivery-icon">🚚</div>
+    <div class="delivery-content">
+      <h3>Доставка стала дешевле!</h3>
+      <p>При оплате онлайн доставка от 0 ₽ и 1 рабочего дня</p>
+    </div>
+  </div>
+
+  <!-- SELLER CARD -->
+  <div class="seller-card">
+    <img src="/static/default-avatar.png" alt="Seller" class="seller-avatar" id="sellerAvatar">
+    <div class="seller-info">
+      <div class="seller-name" id="sellerName">Загрузка...</div>
+      <div class="seller-rating">
+        <span>★</span>
+        <span>4.9</span>
+        <span style="color: #90a4ae;">(128 отзывов)</span>
+      </div>
+      <div class="seller-phone" id="sellerPhone">+992 ...</div>
+    </div>
+    <span class="seller-badge">PRO</span>
+  </div>
+
+  <!-- PRICE BAR (FIXED BOTTOM) -->
+  <div class="price-bar">
+    <div class="price-info">
+      <div class="price-main" id="priceMain">Договорная</div>
+      <div class="price-guarantee">Гарантия возврата денег</div>
+    </div>
+    <button class="buy-btn" onclick="buyNow()">Купить сейчас</button>
+  </div>
+
+</div>
+
+<script src="/static/post.js"></script>
+</body>
+</html>
+

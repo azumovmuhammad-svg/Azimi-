@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel - SadoMarket{% endblock %}</title>
+    <link rel="stylesheet" href="/static/admin/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>SadoAdmin</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="{% if request.url.path == '/admin' %}active{% endif %}">
+                        <a href="/admin">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Дашборд</span>
+                        </a>
+                    </li>
+                    <li class="{% if '/admin/users' in request.url.path %}active{% endif %}">
+                        <a href="/admin/users">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Пользователи</span>
+                            <span class="badge" id="usersBadge"></span>
+                        </a>
+                    </li>
+                    <li class="{% if '/admin/posts' in request.url.path %}active{% endif %}">
+                        <a href="/admin/posts">
+                            <i class="fa-solid fa-bullhorn"></i>
+                            <span>Объявления</span>
+                            <span class="badge" id="postsBadge"></span>
+                        </a>
+                    </li>
+                    <li class="{% if '/admin/categories' in request.url.path %}active{% endif %}">
+                        <a href="/admin/categories">
+                            <i class="fa-solid fa-tags"></i>
+                            <span>Категории</span>
+                        </a>
+                    </li>
+                    <li class="{% if '/admin/reports' in request.url.path %}active{% endif %}">
+                        <a href="/admin/reports">
+                            <i class="fa-solid fa-flag"></i>
+                            <span>Жалобы</span>
+                            <span class="badge danger" id="reportsBadge"></span>
+                        </a>
+                    </li>
+                    <li class="{% if '/admin/settings' in request.url.path %}active{% endif %}">
+                        <a href="/admin/settings">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Настройки</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="/admin/logout" class="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Выйти</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h1 class="page-title">{% block page_title %}Дашборд{% endblock %}</h1>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Поиск..." id="globalSearch">
+                    </div>
+                    <div class="notifications">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="/static/default-avatar.png" alt="Admin">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="content-wrapper">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/admin/admin.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

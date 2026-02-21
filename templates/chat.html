@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/static/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+           <div class="user-info">
+             <img id="headerAvatar" src="/static/default-avatar.png" alt="Avatar">
+             <span id="headerUsername" class="username">...</span>
+           </div>
+            <div class="header-icons">
+                <i class="fas fa-phone"></i>
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will appear here dynamically -->
+        </div>
+
+    <div class="chat-input">
+        <div class="input-wrapper">
+            <input type="text" id="chatInput" placeholder="Write a message..." autocomplete="off">
+
+            <div class="input-inside-icons">
+                <i class="fas fa-paperclip"></i>
+                <i class="fas fa-camera"></i>
+            </div>
+        </div>
+
+        <div class="action-icon">
+            <i id="micSendIcon" class="fas fa-microphone"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Template variables from server -->
+<script>
+    const userId = {{ user_id }};   // ID-и худи корбар
+    const peerId = {{ peer_id }};   // ID-и корбари муқобил
+</script>
+
+<script src="/static/chat.js"></script>
+</body>
+</html>

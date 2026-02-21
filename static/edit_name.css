@@ -1,0 +1,154 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+}
+
+/* ===== APP ===== */
+body {
+  background: #0b1220;
+  color: #e5e7eb;
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ===== TOP BAR ===== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.top-bar .back {
+  background: none;
+  border: none;
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.top-bar .material-icons {
+  font-size: 24px;
+}
+
+.top-bar .title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* ===== CONTENT ===== */
+.content {
+  padding: 18px 16px;
+  flex: 1;
+}
+
+/* ===== BUBBLE BASE ===== */
+.bubble {
+  border-radius: 16px;
+}
+
+/* ===== INPUT BUBBLE ===== */
+.input-bubble {
+  position: relative;
+  border: 1.5px solid #1e293b;
+  padding: 18px 14px 6px;
+  transition: border-color 0.2s ease;
+}
+
+/* INPUT */
+.input-bubble input {
+  width: 100%;
+  height: 32px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* ===== FLOATING LABEL (USING PLACEHOLDER) ===== */
+.input-bubble::before {
+  content: "Your name";
+  position: absolute;
+  left: 14px;
+  top: 18px;
+  font-size: 16px;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: all 0.18s ease;
+}
+
+/* WHEN FOCUS OR HAS VALUE */
+.input-bubble:focus-within::before,
+.input-bubble input:not(:placeholder-shown) + * ,
+.input-bubble:has(input:not(:placeholder-shown))::before {
+  top: 6px;
+  font-size: 12px;
+  color: #60a5fa;
+}
+
+/* REMOVE REAL PLACEHOLDER */
+.input-bubble input::placeholder {
+  color: transparent;
+}
+
+/* FOCUS BORDER */
+.input-bubble:focus-within {
+  border-color: #3b82f6;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 16px;
+}
+
+/* ===== SAVE BUTTON (DEFAULT DISABLED) ===== */
+.save-bubble {
+  height: 54px;
+  border-radius: 28px;
+  background: #1e293b;
+  color: #94a3b8;
+  font-size: 17px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* ===== ENABLE SAVE WHEN INPUT HAS TEXT ===== */
+.app:has(#nameInput:not(:placeholder-shown)) .save-bubble {
+  background: #3b82f6;
+  color: #ffffff;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* PRESS EFFECT */
+.app:has(#nameInput:not(:placeholder-shown)) .save-bubble:active {
+  transform: scale(0.97);
+  background: #2563eb;
+}
+
+.char-count {
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: right;
+  padding: 4px 14px 2px;
+}
+
+.helper-text {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.4;
+  padding: 0 14px 6px;
+}

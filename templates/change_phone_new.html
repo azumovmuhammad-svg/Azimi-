@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>New Number</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="/static/change_phone_new.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="top-bar">
+    <button class="back" onclick="history.back()">
+      <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="title">New Number</div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <h2>New Number</h2>
+    <p class="subtitle">
+      Your new number will receive a confirmation code via call or SMS.
+    </p>
+
+    <!-- COUNTRY -->
+    <div class="field" id="countryField">
+      <label>Country</label>
+      <div class="select">
+        <span id="countryName">Russian Federation</span>
+        <span class="material-icons">chevron_right</span>
+      </div>
+    </div>
+
+    <!-- PHONE -->
+    <div class="field">
+      <label>Phone number</label>
+      <div class="phone-input">
+        <span id="countryCode">+7</span>
+        <input id="phoneInput" type="tel" placeholder="000 000 0000">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NEXT BUTTON -->
+  <button class="fab" id="nextBtn">
+    <span class="material-icons">arrow_forward</span>
+  </button>
+
+</div>
+
+<script src="/static/change_phone_new.js"></script>
+</body>
+</html>

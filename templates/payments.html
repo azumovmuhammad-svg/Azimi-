@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оплата - Помощь</title>
+  <link rel="stylesheet" href="/static/help.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <a href="/help"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1>Оплата</h1>
+  </div>
+
+  <div class="hero">
+    <div class="hero-icon"><i class="fa-solid fa-credit-card"></i></div>
+    <div class="hero-text">Способы оплаты</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Наличный расчет</div>
+
+    <div class="info-card">
+      <i class="fa-solid fa-money-bill-wave info-icon" style="color: #22c55e;"></i>
+      <div class="info-content">
+        <h3>Оплата при встрече</h3>
+        <p>Самый распространенный способ. Вы осматриваете товар и передаете деньги продавцу.</p>
+        <div class="warning-box">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Всегда проверяйте товар перед оплатой!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Безналичная оплата</div>
+
+    <div class="payment-method">
+      <div class="payment-icon"><i class="fa-solid fa-building-columns"></i></div>
+      <div class="payment-details">
+        <h4>Банковский перевод</h4>
+        <p>Перевод на карту продавца через мобильное приложение банка или терминал.</p>
+        <div class="payment-tags">
+          <span class="tag">Безопасно</span>
+          <span class="tag">Есть чек</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-method">
+      <div class="payment-icon" style="background: #f97316;"><i class="fa-solid fa-wallet"></i></div>
+      <div class="payment-details">
+        <h4>Электронные кошельки</h4>
+        <p>Оплата через Visa, MasterCard, МИР и другие платежные системы.</p>
+        <div class="payment-tags">
+          <span class="tag">Быстро</span>
+          <span class="tag">Удобно</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-method">
+      <div class="payment-icon" style="background: #8b5cf6;"><i class="fa-solid fa-mobile-screen"></i></div>
+      <div class="payment-details">
+        <h4>Мобильные платежи</h4>
+        <p>Оплата через мобильные приложения банков.</p>
+        <div class="payment-tags">
+          <span class="tag">Мгновенно</span>
+          <span class="tag">24/7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Безопасность платежей</div>
+
+    <div class="safety-list">
+      <div class="safety-item">
+        <i class="fa-solid fa-check-circle" style="color: #22c55e;"></i>
+        <span>Никогда не отправляйте предоплату незнакомцам</span>
+      </div>
+      <div class="safety-item">
+        <i class="fa-solid fa-check-circle" style="color: #22c55e;"></i>
+        <span>Проверяйте товар перед оплатой</span>
+      </div>
+      <div class="safety-item">
+        <i class="fa-solid fa-check-circle" style="color: #22c55e;"></i>
+        <span>Сохраняйте чеки и подтверждения платежей</span>
+      </div>
+      <div class="safety-item">
+        <i class="fa-solid fa-check-circle" style="color: #22c55e;"></i>
+        <span>Встречайтесь в людных местах</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="cta-box">
+      <h3>Проблема с оплатой?</h3>
+      <p>Мы поможем разобраться</p>
+      <button class="btn-primary" onclick="goTo('/help/contact')">
+        <i class="fa-solid fa-headset"></i> Связаться с поддержкой
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">azimi Help Center</div>
+
+</div>
+
+<script>
+function goTo(url) {
+  window.location.href = url;
+}
+</script>
+</body>
+</html>
+

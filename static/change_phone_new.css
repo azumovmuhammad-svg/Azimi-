@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  background: #0f1b24;
+  font-family: system-ui, sans-serif;
+  color: #fff;
+}
+
+.app {
+  padding: 16px;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-bar .title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.back {
+  background: none;
+  border: none;
+  color: #fff;
+}
+
+.content {
+  margin-top: 32px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #e8f0ff;
+  margin: 32px 0 10px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #8aaaff;
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+
+
+.field {
+  margin-top: 28px;
+}
+
+.field label {
+  color: #6fa8dc;
+  font-size: 13px;
+}
+
+.select {
+  margin-top: 6px;
+  padding: 14px;
+  background: #13222d;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phone-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #1e88e5;
+}
+
+.phone-input span {
+  color: #6fa8dc;
+}
+
+.phone-input input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+}
+
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1e88e5;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+}
