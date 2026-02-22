@@ -3,10 +3,15 @@
 let currentPage = 0;
 let isLoading = false;
 let currentCategory = 'all';
+let allPosts = [];
 
 document.addEventListener("DOMContentLoaded", function() {
+  console.log("DOM loaded - SadoApp Feed");
 
-  // ⭐ PULL TO REFRESH
+  // Load categories from static folder
+  renderStaticCategories();
+
+  // PULL TO REFRESH
   let touchStartY = 0;
   let touchEndY = 0;
   const pullRefresh = document.getElementById('pullRefresh');
@@ -23,30 +28,15 @@ document.addEventListener("DOMContentLoaded", function() {
   function handleSwipe() {
     const swipeDistance = touchEndY - touchStartY;
     if (swipeDistance > 150 && window.scrollY === 0) {
-      // Pull down detected
       pullRefresh.classList.add('show');
       setTimeout(() => {
-        shufflePosts();
+        reloadFeed();
         pullRefresh.classList.remove('show');
       }, 1000);
     }
   }
 
-  // ⭐ CATEGORY FILTER
-  const categoryItems = document.querySelectorAll('.category-item');
-  categoryItems.forEach(item => {
-    item.addEventListener('click', () => {
-      // Remove active from all
-      categoryItems.forEach(c => c.classList.remove('active'));
-      // Add active to clicked
-      item.classList.add('active');
-      // Filter
-      currentCategory = item.dataset.cat;
-      filterPosts(currentCategory);
-    });
-  });
-
-  // --- Клик ба икони профил ---
+  // Profile icon
   const profileIcon = document.querySelector(".top .material-icons-outlined.person");
   if (profileIcon) {
     profileIcon.addEventListener("click", () => {
@@ -58,10 +48,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Тугмаи SHORTS
+  // SHORTS button
   const shortsBtn = document.getElementById("shorts-btn");
   if (shortsBtn) {
-    shortsBtn.addEventListener("click", () => {
+    shortsBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       if (!window.IS_LOGGED_IN) {
         showLoginPrompt();
         return;
@@ -70,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
-  // Навигация
+  // Navigation
   const navItems = document.querySelectorAll(".bottom-nav .nav-item");
   navItems.forEach(item => {
     item.addEventListener("click", function(e) {
@@ -86,43 +77,196 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // Load initial
+  // Load initial feed
   loadFeed();
 });
 
-// ⭐ SHUFFLE POSTS (рефреш куни, ҷой иваз мекунанд)
-function shufflePosts() {
-  const feedContainer = document.querySelector(".feed");
-  const cards = Array.from(feedContainer.querySelectorAll('.card'));
+// ⭐ Render Static Categories from /static/uploads/categories
+function renderStaticCategories() {
+  // Тоза кардани категорияҳои кӯҳна
+  const oldContainer = document.querySelector('.categories-container');
+  if (oldContainer) oldContainer.remove();
 
-  // Fisher-Yates shuffle
-  for (let i = cards.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [cards[i], cards[j]] = [cards[j], cards[i]];
+  // Маълумоти категорияҳо (ном ва ID)
+  const categories = [
+    { id: 'nedvizhimost', name: 'Недвижимость', icon: '/static/uploads/categories/nedvizhimost.png' },
+    { id: 'avto', name: 'Авто', icon: '/static/uploads/categories/avto.png' },
+    { id: 'elektronika', name: 'Электроника', icon: '/static/uploads/categories/elektronika.png' },
+    { id: 'aksessuary', name: 'Аксессуары', icon: '/static/uploads/categories/aksessuary.png' },
+    { id: 'uslugi', name: 'Услуги', icon: '/static/uploads/categories/uslugi.png' },
+    { id: 'dom', name: 'Для дома', icon: '/static/uploads/categories/dom.png' },
+    { id: 'rabota', name: 'Работа', icon: '/static/uploads/categories/rabota.png' },
+    { id: 'biznes', name: 'Бизнес', icon: '/static/uploads/categories/biznes.png' },
+    { id: 'odezhda', name: 'Одежда', icon: '/static/uploads/categories/odezhda.png' },
+    { id: 'all', name: 'Все', icon: '/static/uploads/categories/all.png' }
+  ];
+
+  // Ба ду рада тақсим кардан
+  const half = Math.ceil(categories.length / 2);
+  const firstRow = categories.slice(0, half);
+  const secondRow = categories.slice(half);
+
+  // Эҷоди контейнери нав
+  const container = document.createElement('div');
+  container.className = 'categories-container';
+
+  const scrollDiv = document.createElement('div');
+  scrollDiv.className = 'categories-scroll';
+  scrollDiv.id = 'categoryScroll';
+
+  // Ради аввал
+  const row1 = document.createElement('div');
+  row1.className = 'category-row';
+  firstRow.forEach(cat => {
+    const item = createCategoryElement(cat);
+    row1.appendChild(item);
+  });
+  scrollDiv.appendChild(row1);
+
+  // Ради дуюм
+  const row2 = document.createElement('div');
+  row2.className = 'category-row';
+  secondRow.forEach(cat => {
+    const item = createCategoryElement(cat);
+    row2.appendChild(item);
+  });
+  scrollDiv.appendChild(row2);
+
+  container.appendChild(scrollDiv);
+
+  // Илова ба DOM пас аз top header
+  const topHeader = document.querySelector('.top');
+  if (topHeader) {
+    topHeader.insertAdjacentElement('afterend', container);
   }
 
-  // Re-append with animation
-  cards.forEach((card, index) => {
-    card.style.animation = 'none';
-    setTimeout(() => {
-      card.style.animation = `fadeInUp 0.5s ease ${index * 0.05}s`;
-      feedContainer.appendChild(card);
-    }, 10);
+  // Скролли ҳамвор
+  setupCategoryScroll();
+
+  // Аввал "Все" -ро active кунед
+  const allCategory = document.querySelector('[data-cat="all"]');
+  if (allCategory) {
+    allCategory.classList.add('active');
+    currentCategory = 'all';
+  }
+
+  // CATEGORY FILTER (барои категорияҳои нав)
+  const categoryItems = document.querySelectorAll('.category-item');
+  console.log("Found category items:", categoryItems.length);
+
+  categoryItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const category = this.dataset.cat;
+      console.log("Category clicked:", category);
+
+      // Remove active from all
+      categoryItems.forEach(c => c.classList.remove('active'));
+
+      // Add active to clicked
+      this.classList.add('active');
+
+      // Update current category
+      currentCategory = category;
+
+      // Filter posts
+      filterPosts(category);
+    });
   });
 }
 
-// ⭐ FILTER POSTS
+// Эҷоди элементи категория
+function createCategoryElement(cat) {
+  const item = document.createElement('div');
+  item.className = 'category-item';
+  item.dataset.cat = cat.id;
+
+  item.innerHTML = `
+    <div class="cat-icon" style="background-image: url('${cat.icon}');"></div>
+    <span>${cat.name}</span>
+  `;
+
+  return item;
+}
+
+// Скролли ҳамвор
+function setupCategoryScroll() {
+  const categoryScroll = document.getElementById('categoryScroll');
+  if (categoryScroll) {
+    categoryScroll.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        categoryScroll.scrollLeft += e.deltaY * 2;
+      }
+    }, { passive: false });
+  }
+}
+
+// FILTER POSTS FUNCTION
 function filterPosts(category) {
+  console.log("Filtering posts for category:", category);
   const cards = document.querySelectorAll('.card');
+  let visibleCount = 0;
+
   cards.forEach(card => {
-    if (category === 'all' || card.dataset.category === category) {
+    const cardCategory = card.dataset.category;
+
+    if (category === 'all' || cardCategory === category) {
       card.style.display = 'block';
+      card.style.opacity = '1';
+      card.style.transform = 'scale(1)';
+      visibleCount++;
     } else {
       card.style.display = 'none';
     }
   });
+
+  // Handle shorts visibility (only show in 'all' category)
+  const shortsWrappers = document.querySelectorAll('.shorts-wrapper');
+  shortsWrappers.forEach(wrapper => {
+    if (category === 'all') {
+      wrapper.style.display = 'block';
+    } else {
+      wrapper.style.display = 'none';
+    }
+  });
+
+  // No posts message
+  const feedContainer = document.querySelector(".feed");
+  let noPostsMsg = document.querySelector('.no-posts-message');
+
+  if (visibleCount === 0 && category !== 'all') {
+    if (!noPostsMsg) {
+      noPostsMsg = document.createElement('div');
+      noPostsMsg.className = 'no-posts-message';
+      noPostsMsg.style.cssText = 'grid-column: 1/-1; text-align: center; padding: 40px; color: #9bb8d0; font-size: 15px;';
+      noPostsMsg.textContent = 'Дар ин категория постҳо нест';
+      feedContainer.appendChild(noPostsMsg);
+    }
+  } else {
+    if (noPostsMsg) {
+      noPostsMsg.remove();
+    }
+  }
+
+  console.log(`Visible posts: ${visibleCount}`);
 }
 
+// RELOAD FEED
+async function reloadFeed() {
+  const feedContainer = document.querySelector(".feed");
+  feedContainer.innerHTML = `
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div></div>
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div></div>
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div></div>
+    <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div></div>
+  `;
+  await loadFeed();
+}
+
+// SHOW LOGIN PROMPT
 function showLoginPrompt() {
   let popup = document.createElement("div");
   popup.className = "login-popup";
@@ -192,6 +336,7 @@ function showLoginPrompt() {
   });
 }
 
+// START NEW POST
 async function startNewPost() {
   try {
     const res = await fetch("/auth/post/create-draft", {
@@ -207,48 +352,59 @@ async function startNewPost() {
   }
 }
 
-// Дар feed.js - функцияи loadFeed-ро иваз кунед
-
+// LOAD FEED
 async function loadFeed() {
   const feedContainer = document.querySelector(".feed");
+  console.log("Loading feed...");
 
   try {
-    const res = await fetch("/auth/feed-data", { credentials: "include" });
+    const res = await fetch("/auth/feed-data", { 
+      method: "GET",
+      credentials: "include",
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
     if (!res.ok) throw new Error("Не удалось загрузить ленту");
 
     const data = await res.json();
+    console.log("Feed data received:", data);
+
     feedContainer.innerHTML = "";
 
     const posts = data.posts || [];
+    allPosts = posts;
     let postCount = 0;
 
-    // Ҳар як пост + ҳар 4 пост shorts
     for (let i = 0; i < posts.length; i++) {
       const post = posts[i];
-
-      // Постро илова кун
       const card = createPostCard(post, i);
       feedContainer.appendChild(card);
       postCount++;
 
-      // ⭐ Агар 4 пост шуд, shorts илова кун (баъди 4-ум)
       if (postCount === 4) {
         await addShortsCard(feedContainer, i);
+        postCount = 0;
       }
     }
 
-    // Агар постҳо кам бошанд, skeleton нест кун
     if (posts.length === 0) {
-      feedContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Постов нет</div>';
+      feedContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #9bb8d0;">Постов нет</div>';
+    }
+
+    // Apply current filter
+    if (currentCategory !== 'all') {
+      filterPosts(currentCategory);
     }
 
   } catch (err) {
-    console.error(err);
-    feedContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Ошибка загрузки</div>';
+    console.error("Feed load error:", err);
+    feedContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #9bb8d0;">Ошибка загрузки</div>';
   }
 }
 
-// Функцияи createPostCard (ҳамон)
+// CREATE POST CARD
 function createPostCard(post, index) {
   const card = document.createElement("div");
   card.className = "card";
@@ -256,21 +412,23 @@ function createPostCard(post, index) {
   card.dataset.postId = post.id;
   card.style.animationDelay = `${index * 0.05}s`;
 
+  const priceText = post.price ? post.price.toLocaleString() + ' ' + (post.currency || 'TJS') : 'Договорная';
+  const location = [post.city, post.district].filter(Boolean).join(', ') || 'Локация не указана';
+  const imageUrl = post.image ? `/static/uploads/posts/${post.image}` : '/static/images/default.jpg';
+
   card.innerHTML = `
     <div class="card-image-wrapper">
-      <img src="/static/uploads/posts/${post.image || 'default.png'}" loading="lazy">
+      <img src="${imageUrl}" loading="lazy" onerror="this.src='/static/images/default.jpg'">
       <button class="like-btn" onclick="toggleLike(event, ${post.id})">
         <span class="material-icons-outlined">favorite_border</span>
       </button>
     </div>
     <div class="card-body">
-      <div class="price">
-        ${post.price ? post.price.toLocaleString() + ' ' + post.currency : 'Договорная'}
-      </div>
-      <div class="title">${post.title}</div>
+      <div class="price">${priceText}</div>
+      <div class="title">${post.title || 'Бе ном'}</div>
       <div class="meta">
         <span class="material-icons-outlined" style="font-size: 14px;">location_on</span>
-        ${[post.city, post.district].filter(Boolean).join(', ') || 'Локация не указана'}
+        ${location}
       </div>
     </div>
   `;
@@ -284,7 +442,7 @@ function createPostCard(post, index) {
   return card;
 }
 
-// Shorts (ҳамон)
+// ADD SHORTS CARD
 async function addShortsCard(container, index) {
   try {
     const res = await fetch("/shorts/shorts-data", {
@@ -302,7 +460,6 @@ async function addShortsCard(container, index) {
 
     const shortsWrapper = document.createElement("div");
     shortsWrapper.className = "shorts-wrapper";
-    shortsWrapper.style.gridColumn = "span 2";
 
     const fourShorts = shorts.slice(0, 4);
 
@@ -333,13 +490,16 @@ async function addShortsCard(container, index) {
 
     container.appendChild(shortsWrapper);
 
-    // Auto-play
+    // Auto-play videos
     const videos = shortsWrapper.querySelectorAll("video");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const video = entry.target;
-        if (entry.isIntersecting) video.play().catch(() => {});
-        else video.pause();
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
       });
     }, { threshold: 0.5 });
 
@@ -350,21 +510,22 @@ async function addShortsCard(container, index) {
   }
 }
 
+// FORMAT VIEWS
 function formatViews(num) {
   if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
   if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
   return num;
 }
 
+// OPEN SHORTS
 function openShorts(id) {
   window.location.href = `/shorts?id=${id}`;
 }
 
-
-// Дар feed.js - toggleLike-ро иваз кунед
-
+// TOGGLE LIKE
 async function toggleLike(event, postId) {
-  event.stopPropagation(); // Пешгирии клик ба кард
+  event.stopPropagation();
+  event.preventDefault();
 
   if (!window.IS_LOGGED_IN) {
     showLoginPrompt();
@@ -374,24 +535,26 @@ async function toggleLike(event, postId) {
   const btn = event.currentTarget;
   const icon = btn.querySelector("span");
 
-  // ⭐ Аниматсия
   btn.classList.add("animating");
   setTimeout(() => btn.classList.remove("animating"), 400);
 
   try {
     const res = await fetch(`/auth/like/${postId}`, {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
 
     if (res.ok) {
       const data = await res.json();
 
       if (data.liked) {
-        icon.textContent = "favorite"; // Дил пур
+        icon.textContent = "favorite";
         btn.classList.add("liked");
       } else {
-        icon.textContent = "favorite_border"; // Дил холӣ
+        icon.textContent = "favorite_border";
         btn.classList.remove("liked");
       }
     }
@@ -400,11 +563,14 @@ async function toggleLike(event, postId) {
   }
 }
 
-
-// ⭐ INFINITE SCROLL (опционально)
+// INFINITE SCROLL
 window.addEventListener('scroll', () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-    // Load more posts
+    // Load more posts - можно добавить позже
   }
 });
 
+// EXPORT FUNCTIONS FOR GLOBAL SCOPE
+window.toggleLike = toggleLike;
+window.openShorts = openShorts;
+window.startNewPost = startNewPost;

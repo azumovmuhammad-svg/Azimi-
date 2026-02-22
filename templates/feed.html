@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Azimi Объявление</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SadoApp – Лента</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
@@ -12,89 +12,85 @@
 
 <body>
 
- <!-- HEADER -->
+  <!-- HEADER (sticky) -->
   <div class="top">
+    <a href="/auth/sado_new" class="sado-ai-btn" title="Sado AI">
+      <span class="material-icons-outlined">smart_toy</span>
+    </a>
     <div class="search">
       <span class="material-icons-outlined">search</span>
       <input type="text" placeholder="Ҷустуҷӯ...">
     </div>
     <span class="material-icons-outlined person">person</span>
-   </div>
-
-<!-- CATEGORIES -->
-<div class="categories-scroll">
-
-  <div class="category-item" data-cat="home">
-    <div class="cat-icon home"></div>
-    <span>Недвижимость</span>
   </div>
 
-  <div class="category-item" data-cat="car">
-    <div class="cat-icon car"></div>
-    <span>Авто</span>
-  </div>
-
-  <div class="category-item" data-cat="electronics">
-    <div class="cat-icon electronics"></div>
-    <span>Электроника</span>
-  </div>
-
-  <div class="category-item" data-cat="accessories">
-    <div class="cat-icon accessories"></div>
-    <span>Аксессуары</span>
-  </div>
-
-  <div class="category-item" data-cat="services">
-    <div class="cat-icon services"></div>
-    <span>Услуги</span>
-  </div>
-
-  <div class="category-item" data-cat="home-garden">
-    <div class="cat-icon home-garden"></div>
-    <span>Для дома</span>
-  </div>
-
-  <div class="category-item" data-cat="work">
-    <div class="cat-icon work"></div>
-    <span>Работа</span>
-  </div>
-
-  <div class="category-item" data-cat="business">
-    <div class="cat-icon business"></div>
-    <span>Бизнес</span>
-  </div>
-
-  <div class="category-item" data-cat="clothes">
-    <div class="cat-icon clothes"></div>
-    <span>Одежда</span>
-  </div>
-
-  <div class="category-item all" data-cat="all">
-    <div class="cat-icon all"></div>
-    <span>Все</span>
-  </div>
-
-</div>
-
-<!-- === REKLAMA (ҳамон андоза, фақат акс иваз мешавад) === -->
-<div class="ads-wrapper">
-  <div class="ads-track" id="adsTrack">
-
-    <!-- Рекламаи 1 - Акси шумо -->
-    <div class="ad-card">
-      <img src="/static/images/my-promo-1.jpg" alt="Promo" loading="lazy">
-      <span class="ad-label">реклама</span>
+<!-- CATEGORIES - 2 РАД, ГОРИЗОНТАЛӢ БО ЯКҶОЯ СКРОЛЛ -->
+<div class="categories-container">
+  <div class="categories-scroll" id="categoryScroll">
+    <!-- Ради аввал (5 категория) -->
+    <div class="category-row">
+      <div class="category-item" data-cat="home">
+        <div class="cat-icon home"></div>
+        <span>Недвижимость</span>
+      </div>
+      <div class="category-item" data-cat="car">
+        <div class="cat-icon car"></div>
+        <span>Авто</span>
+      </div>
+      <div class="category-item" data-cat="electronics">
+        <div class="cat-icon electronics"></div>
+        <span>Электроника</span>
+      </div>
+      <div class="category-item" data-cat="accessories">
+        <div class="cat-icon accessories"></div>
+        <span>Аксессуары</span>
+      </div>
+      <div class="category-item" data-cat="services">
+        <div class="cat-icon services"></div>
+        <span>Услуги</span>
+      </div>
     </div>
-
-    <!-- Рекламаи 2 - Акси шумо -->
-    <div class="ad-card">
-      <img src="/static/images/my-promo-2.jpg" alt="Promo" loading="lazy">
-      <span class="ad-label">реклама</span>
+    
+    <!-- Ради дуюм (5 категория) -->
+    <div class="category-row">
+      <div class="category-item" data-cat="home-garden">
+        <div class="cat-icon home-garden"></div>
+        <span>Для дома</span>
+      </div>
+      <div class="category-item" data-cat="work">
+        <div class="cat-icon work"></div>
+        <span>Работа</span>
+      </div>
+      <div class="category-item" data-cat="business">
+        <div class="cat-icon business"></div>
+        <span>Бизнес</span>
+      </div>
+      <div class="category-item" data-cat="clothes">
+        <div class="cat-icon clothes"></div>
+        <span>Одежда</span>
+      </div>
+      <div class="category-item all" data-cat="all">
+        <div class="cat-icon all"></div>
+        <span>Все</span>
+      </div>
     </div>
-
   </div>
 </div>
 
+  <!-- === РЕКЛАМА - МИСЛИ АВИТО === -->
+  <div class="promo-section">
+    <div class="promo-header">
+      <span class="promo-label">РЕКЛАМА</span>
+    </div>
+    <div class="promo-card">
+      <div class="promo-content">
+        <div class="promo-title">Azimi Работа</div>
+        <div class="promo-desc">Найдите своё место в надёжной компании</div>
+        <div class="promo-info">12+ Реклама. ООО «КЕХ Екомерц»</div>
+      </div>
+      <div class="promo-badge">Реклама</div>
+    </div>
+  </div>
 
   <!-- FEED -->
   <main class="feed" id="feedContainer">
@@ -105,40 +101,39 @@
     <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div></div>
   </main>
 
+  <!-- Pull to refresh indicator -->
+  <div class="pull-refresh" id="pullRefresh">
+    <span class="material-icons-outlined">refresh</span>
+    <span>Обновление...</span>
+  </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- BOTTOM NAV (sticky) -->
   <nav class="bottom-nav" id="bottomNav">
-
     <a href="/feed/" class="nav-item active">
       <span class="material-icons-outlined">home</span>
       <small>Лента</small>
     </a>
-
     <a href="javascript:void(0)" class="nav-item" id="shorts-btn">
       <span class="material-icons-outlined">play_circle</span>
       <small>Shorts</small>
     </a>
-
     <a href="javascript:void(0)" class="nav-item add" onclick="startNewPost()">
       <span class="material-icons-outlined">add</span>
     </a>
-
     <a href="/favorite" class="nav-item">
       <span class="material-icons-outlined">favorite_border</span>
       <small>Избранное</small>
     </a>
-
-     <a href="/auth/history" class="nav-item">
+    <a href="/auth/history" class="nav-item">
       <span class="material-icons-outlined">chat</span>
       <small>Чат</small>
-     </a>
+    </a>
   </nav>
 
-<script>
-  window.IS_LOGGED_IN = {{ 'true' if request.session.get('user_id') else 'false' }};
-</script>
-<script src="/static/feed.js"></script>
+  <script>
+    window.IS_LOGGED_IN = {{ 'true' if request.session.get('user_id') else 'false' }};
+  </script>
+  <script src="/static/feed.js"></script>
 
 </body>
 </html>
-
