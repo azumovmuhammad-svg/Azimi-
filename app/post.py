@@ -523,3 +523,34 @@ def get_post(post_id: int):
         }
     }
 
+@post_public_router.get("/my-ads/stats")
+async def get_my_ads_stats(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JSONResponse({"error": "Not logged in"}, status_code=401)
+
+    try:
+        db = get_db()
+        cur = db.cursor()
+
+        # Ҳисоби просмотрҳо аз ҳамаи постҳои корбар
+        cur.execute("""
+            SELECT 
+                COALESCE(SUM(views), 0) as total_views,
+                COALESCE(SUM(calls), 0) as total_calls
+            FROM posts 
+            WHERE user_id = %s
+        """, (user_id,))
+
+        result = cur.fetchone()
+        cur.close()
+        db.close()
+
+        return {
+            "views": result[0] if result else 0,
+            "calls": result[1] if result else 0
+        }
+
+    except Exception as e:
+        print(f"Error getting stats: {e}")
+        return {"views": 0, "calls": 0}

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initFilters();
   await loadActiveAds();
   await loadStats();
+  await loadMyShorts();
 });
 
 function initNavigation() {
@@ -145,9 +146,35 @@ async function loadStats() {
       const data = await res.json();
       document.getElementById("activeCount").textContent = data.active || 0;
 
-      // Mock data for views and calls (replace with real API)
-      document.getElementById("viewsCount").textContent = Math.floor(Math.random() * 1000);
-      document.getElementById("callsCount").textContent = Math.floor(Math.random() * 50);
+      // Барои просмотр ва звонки мо бояд маълумоти воқеиро гирем
+      // Агар API вуҷуд дошта бошад, онро истифода баред
+      try {
+        const statsRes = await fetch("/auth/my-ads/stats", {
+          credentials: "include"
+        });
+
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          document.getElementById("viewsCount").textContent = stats.views || 0;
+          document.getElementById("callsCount").textContent = stats.calls || 0;
+        } else {
+          // Агар API набошад, ҷамъи маълумот аз постҳо
+          const postsRes = await fetch("/auth/my-ads/active/data", {
+            credentials: "include"
+          });
+
+          if (postsRes.ok) {
+            const postsData = await postsRes.json();
+            const totalViews = postsData.posts.reduce((sum, post) => sum + (post.views || 0), 0);
+            const totalCalls = postsData.posts.reduce((sum, post) => sum + (post.calls || 0), 0);
+
+            document.getElementById("viewsCount").textContent = totalViews;
+            document.getElementById("callsCount").textContent = totalCalls;
+          }
+        }
+      } catch (e) {
+        console.log("Stats details not loaded");
+      }
     }
   } catch (err) {
     console.log("Stats not loaded");
@@ -232,8 +259,142 @@ function formatDate(dateString) {
   return date.toLocaleDateString("ru-RU");
 }
 
+// ===== Функсияҳо барои shorts дар саҳифаи актив =====
+
+async function loadMyShorts() {
+  const container = document.getElementById('myShortsContainer');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/shorts/my-shorts', {
+      credentials: 'include',
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (!res.ok) throw new Error('Failed to load');
+
+    const data = await res.json();
+    const shorts = data.shorts || [];
+
+    if (shorts.length === 0) {
+      container.innerHTML = `
+        <div class="empty-short">
+          <span class="material-icons-outlined">videocam_off</span>
+          <p>У вас нет shorts</p>
+          <button onclick="createShort()" class="btn-create-short">
+            <span class="material-icons-outlined">add</span>
+            Создать short
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    let html = '<div class="shorts-grid">';
+    for (const short of shorts) {
+      const statusClass = short.status === 'active' ? 'status-active' : 'status-draft';
+      const statusText = short.status === 'active' ? 'Активно' : 'Черновик';
+
+      html += `
+        <div class="short-card">
+          <div class="short-preview">
+            <video src="${short.video_url}" muted loop playsinline></video>
+            <div class="short-overlay-badge ${statusClass}">${statusText}</div>
+            <div class="short-stats">
+              <span class="material-icons-outlined">favorite</span>
+              <span>${short.likes_count || 0}</span>
+            </div>
+            <div class="short-actions-overlay">
+              <button onclick="playShort(${short.id})" class="btn-play">
+                <span class="material-icons-outlined">play_arrow</span>
+              </button>
+            </div>
+          </div>
+          <div class="short-info">
+            <h4 class="short-title">${escapeHtml(short.title || 'Без названия')}</h4>
+            <p class="short-desc">${escapeHtml(short.description || '').substring(0, 50)}...</p>
+            <div class="short-actions-btns">
+              <button onclick="editShort(${short.id})" class="btn-short-edit">
+                <span class="material-icons-outlined">edit</span>
+              </button>
+              <button onclick="deleteShort(${short.id})" class="btn-short-delete">
+                <span class="material-icons-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    html += '</div>';
+    container.innerHTML = html;
+
+    // Auto-play preview on hover
+    setupShortPreviews();
+
+  } catch (err) {
+    console.error('Error loading shorts:', err);
+    container.innerHTML = '<p class="error-text">Ошибка загрузки shorts</p>';
+  }
+}
+
+function setupShortPreviews() {
+  const videos = document.querySelectorAll('.short-preview video');
+  videos.forEach(video => {
+    const card = video.closest('.short-card');
+    card.addEventListener('mouseenter', () => video.play().catch(() => {}));
+    card.addEventListener('mouseleave', () => {
+      video.pause();
+      video.currentTime = 0;
+    });
+  });
+}
+
+function playShort(id) {
+  window.location.href = `/shorts?play=${id}`;
+}
+
+function editShort(id) {
+  window.location.href = `/shorts/edit/${id}`;
+}
+
+async function deleteShort(id) {
+  // Тафтиши ID
+  if (!id || id === undefined || id === 'undefined') {
+    console.error('Invalid short ID:', id);
+    showToast('Ошибка: неверный ID');
+    return;
+  }
+
+  if (!confirm('Удалить этот short?')) return;
+
+  try {
+    const res = await fetch(`/shorts/delete/${id}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+
+    if (res.ok) {
+      showToast('Short удален');
+      loadMyShorts(); // Reload
+    } else {
+      const errorText = await res.text();
+      console.error('Delete error:', errorText);
+      showToast('Ошибка удаления');
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    showToast('Ошибка сети');
+  }
+}
+
+
+function createShort() {
+  window.location.href = '/auth/add-selection?post_id=0';
+}
+
 function escapeHtml(text) {
-  const div = document.createElement("div");
+  if (!text) return '';
+  const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }

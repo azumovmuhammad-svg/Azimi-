@@ -61,7 +61,7 @@ function initLogout() {
   document.getElementById("logoutBtn").addEventListener("click", async () => {
     if (!confirm("Выйти из аккаунта?")) return;
     try {
-      const res = await fetch("/auth/logout", { credentials: "include" });
+      const res = await fetch("/logout", { credentials: "include" });
       if (res.ok) window.location.href = "/login";
     } catch (err) {
       alert("Ошибка выхода");

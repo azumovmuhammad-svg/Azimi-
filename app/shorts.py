@@ -192,3 +192,63 @@ async def publish_video(request: Request):
         "short_id": draft_id
     }
 
+# =========================
+# Гирифтани shorts-и корбари ҷорӣ
+# =========================
+@shorts_router.get("/my-shorts")
+def my_shorts(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401)
+
+    db = get_db()
+    cur = db.cursor(pymysql.cursors.DictCursor)
+    cur.execute("""
+        SELECT s.id, s.title, s.description, s.video, s.status, s.created_at,
+               (SELECT COUNT(*) FROM short_likes WHERE short_id = s.id) as likes_count
+        FROM shorts s
+        WHERE s.user_id = %s
+        ORDER BY s.created_at DESC
+    """, (user_id,))
+    shorts = cur.fetchall()
+    db.close()
+
+    for short in shorts:
+        if short.get('video'):
+            short['video_url'] = f"/static/uploads/shorts/{short['video']}"
+
+    return {"shorts": shorts}
+
+# =========================
+# API барои нест кардани short
+# =========================
+@shorts_router.delete("/delete/{short_id}")
+def delete_short(short_id: int, request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401)
+
+    db = get_db()
+    cur = db.cursor(pymysql.cursors.DictCursor)
+
+    # Гирифтани номи файл
+    cur.execute("SELECT video FROM shorts WHERE id=%s AND user_id=%s", (short_id, user_id))
+    result = cur.fetchone()
+
+    if not result:
+        db.close()
+        raise HTTPException(404, "Short not found")
+
+    # Нест кардани файл
+    if result['video']:
+        filepath = f"static/uploads/shorts/{result['video']}"
+        if os.path.exists(filepath):
+            os.remove(filepath)
+
+    # Нест кардан аз база
+    cur.execute("DELETE FROM shorts WHERE id=%s AND user_id=%s", (short_id, user_id))
+    db.commit()
+    db.close()
+
+    return {"status": "deleted"}
+

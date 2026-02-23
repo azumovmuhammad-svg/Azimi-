@@ -6,7 +6,7 @@ let currentCategory = 'all';
 let allPosts = [];
 
 document.addEventListener("DOMContentLoaded", function() {
-  console.log("DOM loaded - SadoApp Feed");
+  console.log("DOM loaded - Azimi Feed");
 
   // Load categories from static folder
   renderStaticCategories();
