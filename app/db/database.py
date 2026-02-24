@@ -5,7 +5,7 @@ def get_db():
         host="127.0.0.1",
         port=3307,
         user="azimi_azimi0908",
-        password='Parol12345',
+        password='azimi2004N',
         database="azimi_azimi",
         charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor

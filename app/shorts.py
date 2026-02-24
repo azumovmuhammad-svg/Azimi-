@@ -252,3 +252,48 @@ def delete_short(short_id: int, request: Request):
 
     return {"status": "deleted"}
 
+# =========================
+# Лайк кардани short
+# =========================
+@shorts_router.post("/like/{short_id}")
+def like_short(short_id: int, request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401)
+
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        cur.execute("""
+            INSERT INTO short_likes (short_id, user_id)
+            VALUES (%s, %s)
+        """, (short_id, user_id))
+        db.commit()
+    except:
+        # Already liked
+        pass
+
+    db.close()
+    return {"status": "liked"}
+
+# =========================
+# Бекор кардани лайк
+# =========================
+@shorts_router.post("/unlike/{short_id}")
+def unlike_short(short_id: int, request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401)
+
+    db = get_db()
+    cur = db.cursor()
+    cur.execute("""
+        DELETE FROM short_likes 
+        WHERE short_id = %s AND user_id = %s
+    """, (short_id, user_id))
+    db.commit()
+    db.close()
+
+    return {"status": "unliked"}
+

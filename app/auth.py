@@ -23,7 +23,7 @@ def get_db():
         host="127.0.0.1",
         port=3307,
         user="azimi_azimi0908",
-        password="Parol12345",
+        password="azimi2004N",
         database="azimi_azimi",
         charset="utf8mb4",
         cursorclass=pymysql.cursors.DictCursor
@@ -309,93 +309,6 @@ def help_page(request: Request):
         {"request": request}
     )
 
-
-#---------- CHAT SETTINGS PAGE ----------
-@router.get("/chat_settings", response_class=HTMLResponse)
-def chat_settings_page(request: Request, user_id: int):
-    return templates.TemplateResponse(
-        "chat_settings.html",
-        {
-            "request": request,
-            "user_id": user_id
-        }
-    )
-
-# ---------- GET CHAT SETTINGS ----------
-@router.get("/chat-settings")
-def get_chat_settings(user_id: int):
-    db = get_db()
-    cur = db.cursor()
-
-    cur.execute(
-        """
-        SELECT wallpaper, font_size, bubble_style, theme
-        FROM user_chat_settings
-        WHERE user_id=%s
-        """,
-        (user_id,)
-    )
-    row = cur.fetchone()
-
-    if not row:
-        cur.execute(
-            "INSERT INTO user_chat_settings (user_id) VALUES (%s)",
-            (user_id,)
-        )
-        db.commit()
-        db.close()
-        return {
-            "wallpaper": "default",
-            "font_size": "medium",
-            "bubble_style": "round",
-            "theme": "purple"
-        }
-
-    db.close()
-    return row
-
-
-# POST update chat settings (theme, bubble, font)
-@router.post("/chat-settings")
-def update_chat_settings(data: ChatSettingsUpdate):
-    db = get_db()
-    cur = db.cursor()
-    if data.theme:
-        cur.execute("UPDATE user_chat_settings SET theme=%s WHERE user_id=%s", (data.theme, data.user_id))
-    if data.bubble_style:
-        cur.execute("UPDATE user_chat_settings SET bubble_style=%s WHERE user_id=%s", (data.bubble_style, data.user_id))
-    if data.font_size:
-        cur.execute("UPDATE user_chat_settings SET font_size=%s WHERE user_id=%s", (data.font_size, data.user_id))
-    db.commit()
-    db.close()
-    return {"status": "ok"}
-
-# POST update bubble style only
-@router.post("/chat-settings/bubble")
-def update_bubble_style(data: BubbleStyleUpdate, user_id: int = Query(...)):
-    db = get_db()
-    cur = db.cursor()
-    cur.execute("UPDATE user_chat_settings SET bubble_style=%s WHERE user_id=%s", (data.bubble_style, user_id))
-    db.commit()
-    db.close()
-    return {"status": "ok"}
-
-# POST update theme only
-@router.post("/chat-settings/theme")
-def update_theme(data: ThemeUpdate, user_id: int = Query(...)):
-    db = get_db()
-    cur = db.cursor()
-    cur.execute("UPDATE user_chat_settings SET theme=%s WHERE user_id=%s", (data.theme, user_id))
-    db.commit()
-    db.close()
-    return {"status": "ok"}
-
-
-@router.get("/logout")
-def logout(request: Request):
-    request.session.clear()
-    return RedirectResponse("/auth/login")
-
 @router.get("/data-storage", response_class=HTMLResponse)
 def data_storage_page(request: Request):
     return templates.TemplateResponse(
@@ -478,13 +391,6 @@ def change_phone_country(request: Request):
 
     return templates.TemplateResponse(
         "change_phone_country.html",
-        {"request": request}
-    )
-
-@router.get("/sado")
-def sado_page(request: Request):
-    return templates.TemplateResponse(
-        "sado.html",
         {"request": request}
     )
 
@@ -813,26 +719,75 @@ def clear_archived(request: Request):
     db.close()
     return {"status": "ok"}
 
-# Ҳар ду роут фаъол кунед:
-@router.get("/upload-promo", response_class=HTMLResponse)
-@router.get("/upload_promo", response_class=HTMLResponse)  # Ин ҳам
-def upload_promo_page(request: Request):
-    return templates.TemplateResponse("upload_promo.html", {"request": request})
 
+@router.get("/my-ads/stats")
+async def get_my_ads_stats(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JSONResponse({"error": "Not logged in"}, status_code=401)
 
-@router.post("/upload-promo-image")
-@router.post("/upload_promo_image")  # Ин ҳам
-async def upload_promo_image(
-    request: Request,
-    file: UploadFile = File(...),
-    filename: str = Form(...)
-):
-    upload_dir = "static/images"
-    os.makedirs(upload_dir, exist_ok=True)
-    filepath = os.path.join(upload_dir, filename)
+    try:
+        db = get_db()
+        cur = db.cursor()
 
-    with open(filepath, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+        # Ҳисоби просмотрҳо аз ҳамаи постҳои корбар
+        cur.execute("""
+            SELECT 
+                COALESCE(SUM(views), 0) as total_views,
+                COALESCE(SUM(calls), 0) as total_calls
+            FROM posts 
+            WHERE user_id = %s
+        """, (user_id,))
 
-    return {"status": "ok", "filename": filename, "url": f"/static/images/{filename}"}
+        result = cur.fetchone()
+        cur.close()
+        db.close()
 
+        return {
+            "views": result[0] if result else 0,
+            "calls": result[1] if result else 0
+        }
+
+    except Exception as e:
+        print(f"Error getting stats: {e}")
+        return {"views": 0, "calls": 0}
+
+@router.post("/like/{post_id}")
+async def like_post(post_id: int, request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    db = get_db()
+    cur = db.cursor()
+
+    # Санҷед, ки оё аллакай лайк кардааст
+    cur.execute("SELECT id FROM post_likes WHERE post_id = %s AND user_id = %s", (post_id, user_id))
+    existing = cur.fetchone()
+
+    if existing:
+        cur.execute("DELETE FROM post_likes WHERE post_id = %s AND user_id = %s", (post_id, user_id))
+        liked = False
+    else:
+        cur.execute("INSERT INTO post_likes (post_id, user_id) VALUES (%s, %s)", (post_id, user_id))
+        liked = True
+
+    db.commit()
+    db.close()
+
+    return {"liked": liked}
+
+@router.get("/user-likes")
+def get_user_likes(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return {"liked_posts": []}
+
+    db = get_db()
+    cur = db.cursor(pymysql.cursors.DictCursor)  # DictCursor!
+    cur.execute("SELECT post_id FROM post_likes WHERE user_id = %s", (user_id,))
+    likes = cur.fetchall()
+    db.close()
+
+    liked_posts = [like['post_id'] for like in likes]
+    return {"liked_posts": liked_posts}

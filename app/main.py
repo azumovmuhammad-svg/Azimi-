@@ -10,8 +10,7 @@ from app.post import post_auth_router, post_public_router
 from app.shorts import shorts_router
 from fastapi import Depends
 from app. help_router import router as help_router
-
-# ⭐ ИМПОРТ АДМИН ПАНЕЛ
+from app.favorite import favorite_router
 from app.admin.router import router as admin_router
 
 app = FastAPI()
@@ -35,6 +34,7 @@ app.include_router(post_auth_router)
 app.include_router(post_public_router)
 app.include_router(shorts_router)
 app.include_router(help_router)
+app.include_router(favorite_router)
 
 # ⭐ АДМИН ПАНЕЛ РОУТЕР
 app.include_router(admin_router)
@@ -120,3 +120,7 @@ async def list_routes():
     for route in app.routes:
         print(f"Route: {route.path}")
 
+@app.get("/logout")
+def logout(request: Request):
+    request.session.clear()
+    return RedirectResponse("/login")

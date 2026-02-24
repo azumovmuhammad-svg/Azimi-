@@ -352,13 +352,12 @@ async function startNewPost() {
   }
 }
 
-// LOAD FEED
 async function loadFeed() {
   const feedContainer = document.querySelector(".feed");
   console.log("Loading feed...");
 
   try {
-    const res = await fetch("/auth/feed-data", { 
+    const res = await fetch("/auth/feed-data", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -377,9 +376,26 @@ async function loadFeed() {
     allPosts = posts;
     let postCount = 0;
 
+    // Агар корбар ворид шуда бошад, лайкҳои ӯро гиред
+    let likedPosts = [];
+    if (window.IS_LOGGED_IN) {
+      try {
+        const likesRes = await fetch("/auth/user-likes", {
+          credentials: "include"
+        });
+        if (likesRes.ok) {
+          const likesData = await likesRes.json();
+          likedPosts = likesData.liked_posts || [];
+        }
+      } catch (e) {
+        console.log("Could not load likes");
+      }
+    }
+
     for (let i = 0; i < posts.length; i++) {
       const post = posts[i];
-      const card = createPostCard(post, i);
+      // Ба createPostCard likedPosts-ро низ диҳед
+      const card = createPostCard(post, i, likedPosts);
       feedContainer.appendChild(card);
       postCount++;
 
@@ -404,8 +420,7 @@ async function loadFeed() {
   }
 }
 
-// CREATE POST CARD
-function createPostCard(post, index) {
+function createPostCard(post, index, likedPosts = []) {
   const card = document.createElement("div");
   card.className = "card";
   card.dataset.category = post.category || 'all';
@@ -416,11 +431,16 @@ function createPostCard(post, index) {
   const location = [post.city, post.district].filter(Boolean).join(', ') || 'Локация не указана';
   const imageUrl = post.image ? `/static/uploads/posts/${post.image}` : '/static/images/default.jpg';
 
+  // Санҷед, ки оё ин пост лайк шудааст
+  const isLiked = likedPosts.includes(post.id);
+  const likeIcon = isLiked ? "favorite" : "favorite_border";
+  const likedClass = isLiked ? "liked" : "";
+
   card.innerHTML = `
     <div class="card-image-wrapper">
       <img src="${imageUrl}" loading="lazy" onerror="this.src='/static/images/default.jpg'">
-      <button class="like-btn" onclick="toggleLike(event, ${post.id})">
-        <span class="material-icons-outlined">favorite_border</span>
+      <button class="like-btn ${likedClass}" onclick="toggleLike(event, ${post.id})">
+        <span class="material-icons-outlined">${likeIcon}</span>
       </button>
     </div>
     <div class="card-body">

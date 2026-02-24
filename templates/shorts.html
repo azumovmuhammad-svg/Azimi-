@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Shorts</title>
   <link rel="stylesheet" href="/static/shorts.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
@@ -11,15 +11,30 @@
   <div class="shorts-container" id="shortsContainer">
     <div class="loading">Загрузка...</div>
   </div>
-  
-  <div class="shorts-nav">
-    <span class="material-icons-outlined" onclick="window.location.href='/feed'">home</span>
-    <span class="material-icons-outlined" style="color: #fff;">play_circle</span>
-    <span class="material-icons-outlined" onclick="window.location.href='/auth/add-selection?post_id=0'">add_circle</span>
-    <span class="material-icons-outlined">person</span>
-  </div>
 
-  <script src="/static/shorts.js?v=2"></script>
+  <!-- Bottom Nav - Мисли feed.html -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="/feed" class="nav-item">
+      <span class="material-icons-outlined">home</span>
+      <small>Лента</small>
+    </a>
+    <a href="/shorts" class="nav-item active">
+      <span class="material-icons-outlined">play_circle</span>
+      <small>Shorts</small>
+    </a>
+    <a href="javascript:void(0)" class="nav-item add" onclick="startNewPost()">
+      <span class="material-icons-outlined">add</span>
+    </a>
+    <a href="/favorite" class="nav-item">
+      <span class="material-icons-outlined">favorite_border</span>
+      <small>Избранное</small>
+    </a>
+    <a href="/auth/history" class="nav-item">
+      <span class="material-icons-outlined">chat</span>
+      <small>Чат</small>
+    </a>
+  </nav>
+
+  <script src="/static/shorts.js?v=4"></script>
 </body>
 </html>
-

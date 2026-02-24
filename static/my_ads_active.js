@@ -89,52 +89,47 @@ function renderAds(posts) {
   const container = document.getElementById("adsContainer");
 
   container.innerHTML = posts.map((post, index) => `
-    <div class="ad-card" data-id="${post.id}" style="animation-delay: ${index * 0.1}s">
+    <div class="ad-card" data-id="${post.id}" style="animation-delay: ${index * 0.1}s" onclick="viewAd(${post.id})">
       <div class="ad-image-container">
         <img src="${post.image ? '/' + post.image : '/static/no-image.png'}"
              alt="${post.title}"
              class="ad-image"
              onerror="this.src='/static/no-image.png'">
         <span class="ad-badge">Активно</span>
-        <div class="ad-stats-overlay">
-          <div class="stat-pill">
-            <span class="material-icons-outlined">visibility</span>
-            ${post.views || 0}
-          </div>
-          <div class="stat-pill">
-            <span class="material-icons-outlined">call</span>
-            ${post.calls || 0}
-          </div>
-        </div>
       </div>
 
       <div class="ad-content">
-        <div class="ad-price">${formatPrice(post.price, post.currency)}</div>
-        <div class="ad-title">${escapeHtml(post.title)}</div>
-        <div class="ad-location">
-          <span class="material-icons-outlined">location_on</span>
-          ${post.city}${post.district ? ', ' + post.district : ''}
+        <div>
+          <div class="ad-price">${formatPrice(post.price, post.currency)}</div>
+          <div class="ad-title">${escapeHtml(post.title)}</div>
+          <div class="ad-location">
+            <span class="material-icons-outlined">location_on</span>
+            ${post.city || 'Не указано'}${post.district ? ', ' + post.district : ''}
+          </div>
+          <div class="ad-date">${formatDate(post.created_at)}</div>
         </div>
-        <div class="ad-date">${formatDate(post.created_at)}</div>
-      </div>
 
-      <div class="ad-actions">
-        <button class="ad-btn secondary" onclick="editAd(${post.id})">
-          <span class="material-icons-outlined">edit</span>
-          Изменить
-        </button>
-        <button class="ad-btn primary" onclick="promoteAd(${post.id})">
-          <span class="material-icons-outlined">trending_up</span>
-          Продвигать
-        </button>
-        <button class="ad-btn danger" onclick="archiveAd(${post.id})">
-          <span class="material-icons-outlined">archive</span>
-          В архив
-        </button>
+        <!-- Просмотр ва Звонки дар таги -->
+        <div class="ad-stats-bottom">
+          <div class="stat-item-bottom">
+            <span class="material-icons-outlined">visibility</span>
+            <span>${post.views || 0}</span>
+          </div>
+          <div class="stat-item-bottom">
+            <span class="material-icons-outlined">call</span>
+            <span>${post.calls || 0}</span>
+          </div>
+        </div>
       </div>
     </div>
   `).join("");
 }
+
+// Функсияи нав - клик кардани пост
+function viewAd(id) {
+  window.location.href = `/post/${id}`;
+}
+
 
 async function loadStats() {
   try {
