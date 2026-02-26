@@ -461,25 +461,104 @@ def add4_page(request: Request, post_id: int = Query(...)):
         {"request": request, "post_id": post_id}
     )
 
-
+#FEED DATA
 @router.get("/feed-data")
 def feed_data():
     db = get_db()
     cur = db.cursor(pymysql.cursors.DictCursor)
 
+    now = datetime.now()
+
+    # 1. VIP постҳо (6 соат)
     cur.execute("""
         SELECT p.id, p.title, p.price, p.currency, p.city, p.district,
-               pi.filename AS image
+               p.category, p.subcategory,
+               p.promote_type, p.promote_ends_at,
+               (SELECT filename FROM post_images WHERE post_id = p.id ORDER BY id LIMIT 1) AS image,
+               TIMESTAMPDIFF(MINUTE, %s, p.promote_ends_at) as time_left
         FROM posts p
-        LEFT JOIN post_images pi ON pi.post_id = p.id
         WHERE p.status='active'
-        GROUP BY p.id
+          AND p.promote_type='vip'
+          AND p.promote_ends_at > %s
+        ORDER BY p.promote_ends_at DESC
+        LIMIT 10
+    """, (now, now))
+    vip_posts = cur.fetchall()
+
+    # 2. Срочно постҳо (6 соат)
+    cur.execute("""
+        SELECT p.id, p.title, p.price, p.currency, p.city, p.district,
+               p.category, p.subcategory,
+               p.promote_type, p.promote_ends_at,
+               (SELECT filename FROM post_images WHERE post_id = p.id ORDER BY id LIMIT 1) AS image,
+               TIMESTAMPDIFF(MINUTE, %s, p.promote_ends_at) as time_left
+        FROM posts p
+        WHERE p.status='active'
+          AND p.promote_type='urgent'
+          AND p.promote_ends_at > %s
+        ORDER BY p.promote_ends_at DESC
+        LIMIT 10
+    """, (now, now))
+    urgent_posts = cur.fetchall()
+
+    # 3. Топ постҳо (2 соат)
+    cur.execute("""
+        SELECT p.id, p.title, p.price, p.currency, p.city, p.district,
+               p.category, p.subcategory,
+               p.promote_type, p.promote_ends_at,
+               (SELECT filename FROM post_images WHERE post_id = p.id ORDER BY id LIMIT 1) AS image,
+               TIMESTAMPDIFF(MINUTE, %s, p.promote_ends_at) as time_left
+        FROM posts p
+        WHERE p.status='active'
+          AND p.promote_type='top'
+          AND p.promote_ends_at > %s
+        ORDER BY p.promote_ends_at DESC
+        LIMIT 10
+    """, (now, now))
+    top_posts = cur.fetchall()
+
+    # 4. Постҳои оддӣ
+    cur.execute("""
+        SELECT p.id, p.title, p.price, p.currency, p.city, p.district,
+               p.category, p.subcategory,
+               p.promote_type,
+               (SELECT filename FROM post_images WHERE post_id = p.id ORDER BY id LIMIT 1) AS image
+        FROM posts p
+        WHERE p.status='active'
+          AND (p.promote_type IS NULL OR p.promote_ends_at < %s)
         ORDER BY p.id DESC
         LIMIT 50
-    """)
-    posts = cur.fetchall()
+    """, (now,))
+    regular_posts = cur.fetchall()
+
+    # Ислоҳи пути тасвирҳо барои ҳамаи постҳо
+    def fix_image_path(posts):
+        for post in posts:
+            if post and post.get('image'):
+                filename = post['image']
+                # Тоза кардани пути кӯҳна
+                if filename.startswith('static/uploads/posts/'):
+                    filename = filename.replace('static/uploads/posts/', '')
+                elif filename.startswith('/static/uploads/posts/'):
+                    filename = filename.replace('/static/uploads/posts/', '')
+                elif filename.startswith('uploads/posts/'):
+                    filename = filename.replace('uploads/posts/', '')
+                post['image'] = filename
+        return posts
+
+    vip_posts = fix_image_path(vip_posts)
+    urgent_posts = fix_image_path(urgent_posts)
+    top_posts = fix_image_path(top_posts)
+    regular_posts = fix_image_path(regular_posts)
+
     db.close()
-    return {"posts": posts}
+
+    return {
+        "vip": vip_posts,
+        "urgent": urgent_posts,
+        "top": top_posts,
+        "regular": regular_posts
+    }
 
 
 @router.get("/add-selection", response_class=HTMLResponse)
@@ -791,3 +870,101 @@ def get_user_likes(request: Request):
 
     liked_posts = [like['post_id'] for like in likes]
     return {"liked_posts": liked_posts}
+
+# ========== ПРОДВИЖЕНИЕ ==========
+
+@router.post("/post/promote")
+def promote_post(
+    post_id: int = Form(...),
+    promote_type: str = Form(...),  # 'vip', 'urgent', 'top'
+    request: Request = None
+):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401, "Unauthorized")
+
+    db = get_db()
+    cur = db.cursor(pymysql.cursors.DictCursor)
+
+    # Проверка - ин пости ҳамин корбар аст?
+    cur.execute("SELECT user_id FROM posts WHERE id=%s", (post_id,))
+    post = cur.fetchone()
+    if not post or post['user_id'] != user_id:
+        db.close()
+        raise HTTPException(403, "Not your post")
+
+    # Вақти ҳозира
+    now = datetime.now()
+
+    # Муайян кардани вақти поёни продвижение
+    if promote_type == 'vip':
+        ends_at = now + timedelta(hours=6)  # 6 соат
+    elif promote_type == 'urgent':
+        ends_at = now + timedelta(hours=6)  # 6 соат
+    elif promote_type == 'top':
+        ends_at = now + timedelta(hours=2)  # 2 соат
+    else:
+        db.close()
+        raise HTTPException(400, "Invalid promote type")
+
+    # Запис дар база
+    cur.execute("""
+        UPDATE posts 
+        SET promote_type=%s, 
+            promote_started_at=%s, 
+            promote_ends_at=%s,
+            promote_count = promote_count + 1
+        WHERE id=%s
+    """, (promote_type, now, ends_at, post_id))
+
+    db.commit()
+    db.close()
+
+    return {
+        "status": "ok",
+        "promote_type": promote_type,
+        "ends_at": ends_at.isoformat()
+    }
+
+
+@router.get("/post/promote-status")
+def promote_status(post_id: int, request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401, "Unauthorized")
+
+    db = get_db()
+    cur = db.cursor(pymysql.cursors.DictCursor)
+
+    cur.execute("""
+        SELECT promote_type, promote_started_at, promote_ends_at, promote_count
+        FROM posts 
+        WHERE id=%s AND user_id=%s
+    """, (post_id, user_id))
+
+    post = cur.fetchone()
+    db.close()
+
+    if not post:
+        raise HTTPException(404, "Post not found")
+
+    now = datetime.now()
+    is_active = False
+    time_left = 0
+
+    if post['promote_ends_at']:
+        ends_at = post['promote_ends_at']
+        if isinstance(ends_at, str):
+            ends_at = datetime.fromisoformat(ends_at)
+
+        is_active = ends_at > now
+        if is_active:
+            time_left = int((ends_at - now).total_seconds() / 60)  # дақиқаҳо
+
+    return {
+        "promote_type": post['promote_type'],
+        "is_active": is_active,
+        "time_left_minutes": time_left,
+        "total_uses": post['promote_count']
+    }
+

@@ -36,9 +36,13 @@ const citiesData = {
 let selectedCity = null;
 let selectedDistrict = null;
 let postId = null;
+let currentUser = null; // Маълумоти корбар
 
 document.addEventListener("DOMContentLoaded", () => {
   postId = document.querySelector(".app").dataset.postId;
+
+  // Боркунии маълумоти корбар
+  loadUserData();
 
   // Phone input mask
   const phoneInput = document.getElementById("phoneInput");
@@ -68,8 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!this.checked) telegramInput.value = "";
   });
 
-  // Initially disable telegram
+  // Instagram toggle
+  document.getElementById("showInstagramToggle").addEventListener("change", function() {
+    const instagramInput = document.getElementById("instagramInput");
+    instagramInput.disabled = !this.checked;
+    if (!this.checked) instagramInput.value = "";
+  });
+
+  // Initially disable telegram and instagram
   document.getElementById("telegramInput").disabled = true;
+  document.getElementById("instagramInput").disabled = true;
 
   // Continue button
   document.getElementById("continueBtn").addEventListener("click", submitForm);
@@ -77,6 +89,56 @@ document.addEventListener("DOMContentLoaded", () => {
   // City search
   document.getElementById("citySearch").addEventListener("input", filterCities);
 });
+
+// === ФУНКСИЯИ НАВ: Боркунии маълумоти корбар ===
+async function loadUserData() {
+  try {
+    const res = await fetch("/auth/profile", {
+      credentials: "include"
+    });
+
+    if (!res.ok) throw new Error("Failed to load user");
+
+    currentUser = await res.json();
+
+    // Пур кардани автоматии майдонҳо
+    fillUserData();
+
+  } catch (err) {
+    console.error("Error loading user:", err);
+    // Агар хатогӣ бошад, майдонҳо холӣ мемонанд
+  }
+}
+
+// === ФУНКСИЯИ НАВ: Пур кардани майдонҳо бо маълумоти корбар ===
+function fillUserData() {
+  if (!currentUser) return;
+
+  // Пур кардани ном
+  const nameInput = document.getElementById("nameInput");
+  if (nameInput && currentUser.username) {
+    nameInput.value = currentUser.username;
+  }
+
+  // Пур кардани телефон (аз базаи +992XX XXX XX XX)
+  const phoneInput = document.getElementById("phoneInput");
+  if (phoneInput && currentUser.phone) {
+    // Тоза кардани +992 аз аввал
+    let phone = currentUser.phone.replace("+992", "").replace(/\D/g, "");
+    // Форматирование: XX XXX XX XX
+    if (phone.length >= 9) {
+      phoneInput.value = phone.slice(0, 2) + " " + 
+                         phone.slice(2, 5) + " " + 
+                         phone.slice(5, 7) + " " + 
+                         phone.slice(7, 9);
+    } else {
+      phoneInput.value = phone;
+    }
+  }
+
+  // Проверка формы после заполнения
+  validateForm();
+}
 
 function openCityModal() {
   const modal = document.getElementById("cityModal");
@@ -177,16 +239,14 @@ function validateForm() {
   document.getElementById("continueBtn").disabled = !isValid;
 }
 
-// === ТАНҲО ЯК ФУНКСИЯИ submitForm() ===
 async function submitForm() {
   const btn = document.getElementById("continueBtn");
   btn.disabled = true;
   btn.innerHTML = '<span class="material-icons-outlined">hourglass_top</span> Сохранение...';
 
-  // === МУҲИМ: PostData-ро навсозӣ ва сабт кун ПЕШ аз рафтан ===
   const phoneValue = "+992" + document.getElementById("phoneInput").value.replace(/\D/g, "");
   const contactNameValue = document.getElementById("nameInput").value.trim();
-  
+
   if (typeof PostData !== 'undefined') {
     PostData.city = selectedCity;
     PostData.district = selectedDistrict;
@@ -194,6 +254,8 @@ async function submitForm() {
     PostData.contactName = contactNameValue;
     PostData.telegram = document.getElementById("telegramInput").value.trim();
     PostData.showTelegram = document.getElementById("showTelegramToggle").checked;
+    PostData.instagram = document.getElementById("instagramInput").value.trim();
+    PostData.showInstagram = document.getElementById("showInstagramToggle").checked;
     PostData.allowMessages = document.getElementById("messagesToggle").checked;
     PostData.bargain = document.getElementById("bargainToggle").checked;
     PostData.save();
@@ -207,6 +269,8 @@ async function submitForm() {
     contact_name: contactNameValue,
     telegram: document.getElementById("telegramInput").value.trim(),
     show_telegram: document.getElementById("showTelegramToggle").checked,
+    instagram: document.getElementById("instagramInput").value.trim(),
+    show_instagram: document.getElementById("showInstagramToggle").checked,
     allow_messages: document.getElementById("messagesToggle").checked,
     bargain: document.getElementById("bargainToggle").checked
   };

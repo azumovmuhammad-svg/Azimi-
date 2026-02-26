@@ -354,6 +354,8 @@ async function startNewPost() {
 
 async function loadFeed() {
   const feedContainer = document.querySelector(".feed");
+  const mainContainer = document.querySelector("main") || document.body;
+
   console.log("Loading feed...");
 
   try {
@@ -370,13 +372,53 @@ async function loadFeed() {
     const data = await res.json();
     console.log("Feed data received:", data);
 
-    feedContainer.innerHTML = "";
+    // === VIP & СРОЧНО СЕКЦИЯ ===
+    let promotedHtml = '';
+    let hasPromoted = false;
 
-    const posts = data.posts || [];
-    allPosts = posts;
+    if (data.vip && data.vip.length > 0) {
+      hasPromoted = true;
+      promotedHtml += renderPromotedPosts(data.vip, 'vip');
+    }
+
+    if (data.urgent && data.urgent.length > 0) {
+      hasPromoted = true;
+      promotedHtml += renderPromotedPosts(data.urgent, 'urgent');
+    }
+
+    if (data.top && data.top.length > 0) {
+      hasPromoted = true;
+      promotedHtml += renderPromotedPosts(data.top, 'top');
+    }
+
+    // === МУҲИМ: VIP/Срочно-ро ПЕШ аз .feed гузор ===
+    let existingPromoted = document.querySelector('.promoted-section');
+    if (existingPromoted) existingPromoted.remove();
+
+    if (hasPromoted) {
+      const promotedSection = document.createElement('div');
+      promotedSection.className = 'promoted-section';
+      promotedSection.innerHTML = `
+        <div class="promoted-header">
+          <span class="promoted-label">🔥 Премиум объявления</span>
+          <span style="font-size: 11px; color: #6f8a9c;">Свайп →</span>
+        </div>
+        <div class="promoted-scroll">
+          ${promotedHtml}
+        </div>
+      `;
+
+      // ПЕШ аз .feed гузоштан
+      feedContainer.parentNode.insertBefore(promotedSection, feedContainer);
+    }
+
+    // === ПОСТҲОИ ОДДӢ ===
+    feedContainer.innerHTML = "";  // Тоза кардан
+
+    const regularPosts = data.regular || data.posts || [];
+    allPosts = regularPosts;
     let postCount = 0;
 
-    // Агар корбар ворид шуда бошад, лайкҳои ӯро гиред
     let likedPosts = [];
     if (window.IS_LOGGED_IN) {
       try {
@@ -392,9 +434,8 @@ async function loadFeed() {
       }
     }
 
-    for (let i = 0; i < posts.length; i++) {
-      const post = posts[i];
-      // Ба createPostCard likedPosts-ро низ диҳед
+    for (let i = 0; i < regularPosts.length; i++) {
+      const post = regularPosts[i];
       const card = createPostCard(post, i, likedPosts);
       feedContainer.appendChild(card);
       postCount++;
@@ -405,11 +446,10 @@ async function loadFeed() {
       }
     }
 
-    if (posts.length === 0) {
+    if (regularPosts.length === 0 && !hasPromoted) {
       feedContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #9bb8d0;">Постов нет</div>';
     }
 
-    // Apply current filter
     if (currentCategory !== 'all') {
       filterPosts(currentCategory);
     }
@@ -418,6 +458,57 @@ async function loadFeed() {
     console.error("Feed load error:", err);
     feedContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #9bb8d0;">Ошибка загрузки</div>';
   }
+}
+
+
+// === ФУНКСИЯИ НАВ: VIP/Срочно/Топ ===
+function renderPromotedPosts(posts, type) {
+  return posts.map(post => {
+    const priceText = post.price ? post.price.toLocaleString() + ' ' + (post.currency || 'TJS') : 'Договорная';
+    const location = [post.city, post.district].filter(Boolean).join(' · ') || 'Локация не указана';
+    const imageUrl = post.image ? `/static/uploads/posts/${post.image}` : '/static/images/default.jpg';
+
+    // Вақти боқимонда
+    let timeLeft = '';
+    if (post.time_left && post.time_left > 0) {
+      const hours = Math.floor(post.time_left / 60);
+      const minutes = post.time_left % 60;
+      timeLeft = `⏱ ${hours}ч ${minutes}м`;
+    }
+
+    // Badge класс
+    let badgeClass = '';
+    let badgeText = '';
+    if (type === 'vip') {
+      badgeClass = 'vip-badge premium';
+      badgeText = 'ПРЕМИУМ';
+    } else if (type === 'urgent') {
+      badgeClass = 'urgent-badge';
+      badgeText = 'СРОЧНО';
+    } else if (type === 'top') {
+      badgeClass = 'top-badge';
+      badgeText = 'ТОП';
+    }
+
+    return `
+      <div class="${type}-card" onclick="openPost(${post.id})">
+        <div class="${badgeClass}">${badgeText}</div>
+        <div class="card-image-wrapper">
+          <img src="${imageUrl}" alt="${type.toUpperCase()}" onerror="this.src='/static/images/default.jpg'">
+          ${timeLeft ? `<div class="time-remaining">${timeLeft}</div>` : ''}
+        </div>
+        <div class="card-body">
+          <div class="price">${priceText}</div>
+          <div class="title">${post.title || 'Бе ном'}</div>
+          <div class="meta">📍 ${location}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openPost(id) {
+  window.location.href = `/post/${id}`;
 }
 
 function createPostCard(post, index, likedPosts = []) {
@@ -594,3 +685,5 @@ window.addEventListener('scroll', () => {
 window.toggleLike = toggleLike;
 window.openShorts = openShorts;
 window.startNewPost = startNewPost;
+window.openPost = openPost;
+

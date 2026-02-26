@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Предпросмотр - SadoApp</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/add4.css">
 </head>
 <body>
@@ -17,7 +18,7 @@
       <span class="material-icons-outlined">arrow_back</span>
     </button>
     <span class="header-title">Проверьте ваше объявление</span>
-    <div style="width: 40px;"></div>
+    <div style="width: 30px;"></div>
   </div>
 
   <!-- MAIN CARD -->
@@ -25,9 +26,7 @@
     
     <!-- IMAGE SLIDER -->
     <div class="image-slider" id="imageSlider">
-      <div class="slides-container" id="slidesContainer">
-        <!-- Images loaded from session -->
-      </div>
+      <div class="slides-container" id="slidesContainer"></div>
       <div class="slider-counter" id="sliderCounter">1/1</div>
       <div class="slider-dots" id="sliderDots"></div>
       
@@ -37,36 +36,43 @@
       </button>
     </div>
 
+    <!-- PRICE & CATEGORY ROW - зери акс -->
+    <div class="price-category-row">
+      <div class="price-section-inline">
+        <span class="price-value-inline" id="priceValueInline">--</span>
+        <span class="price-currency-inline" id="priceCurrencyInline">TJS</span>
+      </div>
+      <div class="category-badge-inline" id="categoryBadgeInline">
+        <span class="material-icons-outlined">category</span>
+        <span id="categoryTextInline">--</span>
+      </div>
+    </div>
+
     <!-- CONTENT -->
     <div class="content-section">
       
-      <!-- PRICE -->
-      <div class="price-section">
-        <span class="price-value" id="priceValue">--</span>
-        <span class="price-currency" id="priceCurrency"></span>
-        <span class="price-negotiable" id="priceNegotiable" style="display: none;">Договорная</span>
+      <!-- TITLE BOX бо лейбл -->
+      <div class="title-box">
+        <div class="title-label">название объявления</div>
+        <div class="title-value" id="productTitle">--</div>
       </div>
 
-      <!-- TITLE -->
-      <h1 class="product-title" id="productTitle">--</h1>
-
-      <!-- CATEGORY -->
-      <div class="category-badge" id="categoryBadge">
-        <span class="material-icons-outlined">category</span>
-        <span id="categoryText">--</span>
+      <!-- LOCATION BOX бо лейбл -->
+      <div class="location-box">
+        <span class="material-icons-outlined location-icon">location_on</span>
+        <div class="location-content">
+          <div class="location-label">местоположение</div>
+          <div class="location-value" id="locationValue">--</div>
+        </div>
       </div>
 
-      <!-- LOCATION -->
-      <div class="location-row">
-        <span class="material-icons-outlined">location_on</span>
-        <span id="locationText">--</span>
-      </div>
-
-      <!-- SELLER INFO -->
-      <div class="seller-mini" id="sellerMini">
-        <span class="material-icons-outlined">person</span>
-        <span id="sellerName">--</span>
-        <span class="verified-badge" title="Телефон подтвержден">✓</span>
+      <!-- SELLER BOX бо лейбл -->
+      <div class="seller-box">
+        <div class="seller-label">имя продавец</div>
+        <div class="seller-value">
+          <span id="sellerName">--</span>
+          <span class="verified-badge">✓</span>
+        </div>
       </div>
 
       <!-- DIVIDER -->
@@ -75,13 +81,15 @@
       <!-- DESCRIPTION -->
       <div class="description-section">
         <h3>Описание</h3>
-        <p id="descriptionText">--</p>
+        <div class="description-box">
+          <p id="descriptionText">Описание отсутствует</p>
+        </div>
       </div>
 
-      <!-- ATTRIBUTES -->
+      <!-- ATTRIBUTES - 1 сутун -->
       <div class="attributes-section" id="attributesSection">
         <h3>Характеристики</h3>
-        <div class="attributes-grid" id="attributesGrid"></div>
+        <div id="attributesGrid"></div>
       </div>
 
       <!-- CONTACT INFO -->
@@ -95,19 +103,24 @@
           <span class="material-icons-outlined">send</span>
           <span id="contactTelegram">--</span>
         </div>
+        <div class="contact-item" id="instagramItem" style="display: none;">
+          <span class="material-icons-outlined">photo_camera</span>
+          <span id="contactInstagram">--</span>
+        </div>
       </div>
 
     </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="action-buttons">
-      <button class="btn-edit" onclick="goToStep(2)">
-        <span class="material-icons-outlined">edit</span>
-        Изменить
-      </button>
-      <button class="btn-publish" onclick="publishPost()" id="publishBtn">
+    <!-- MAIN ACTIONS - ба поён -->
+    <div class="main-actions">
+      <button class="btn-action btn-publish-main" onclick="publishPost()" id="publishBtn">
         <span class="material-icons-outlined">send</span>
         Опубликовать
+      </button>
+      <!-- ИСЛОҲ: onclick="openPromoteModal()" ба ҷои promotePost() -->
+      <button class="btn-action btn-promote-main" onclick="openPromoteModal()">
+        <span class="material-icons-outlined">trending_up</span>
+        Продвигать
       </button>
     </div>
 
@@ -140,6 +153,44 @@
           <span class="material-icons-outlined">home</span>
           На главную
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMOTE MODAL -->
+  <div class="promote-modal" id="promoteModal">
+    <div class="promote-content">
+      <div class="promote-header">
+        <h3>Продвинуть объявление</h3>
+        <button class="close-promote" onclick="closePromote()">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="promote-options">
+        <div class="promote-option" onclick="selectPromote('vip')">
+          <div class="promote-icon vip">VIP</div>
+          <div class="promote-info">
+            <div class="promote-title">VIP объявление</div>
+            <div class="promote-desc">Выделение цветом и топ позиция</div>
+            <div class="promote-price">10 TJS / 7 дней</div>
+          </div>
+        </div>
+        <div class="promote-option" onclick="selectPromote('top')">
+          <div class="promote-icon top">ТОП</div>
+          <div class="promote-info">
+            <div class="promote-title">Топ размещение</div>
+            <div class="promote-desc">Поднятие в начало списка каждые 6 часов</div>
+            <div class="promote-price">5 TJS / 7 дней</div>
+          </div>
+        </div>
+        <div class="promote-option" onclick="selectPromote('urgent')">
+          <div class="promote-icon urgent">СРОЧНО</div>
+          <div class="promote-info">
+            <div class="promote-title">Срочная продажа</div>
+            <div class="promote-desc">Специальная метка "Срочно"</div>
+            <div class="promote-price">5 TJS / 7 дней</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
