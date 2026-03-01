@@ -831,6 +831,33 @@ async def get_my_ads_stats(request: Request):
         print(f"Error getting stats: {e}")
         return {"views": 0, "calls": 0}
 
+@router.get("/my-ad/{post_id}", response_class=HTMLResponse)
+def my_ad_detail_page(request: Request, post_id: int):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(401, "Unauthorized")
+
+    # Проверка, ки ин эълон ба ҳамин корбар тааллуқ дорад
+    db = get_db()
+    cur = db.cursor()
+    cur.execute(
+        "SELECT id FROM posts WHERE id=%s AND user_id=%s AND status='active'",
+        (post_id, user_id)
+    )
+    post = cur.fetchone()
+    db.close()
+
+    if not post:
+        return RedirectResponse("/auth/my-ads/active")
+
+    return templates.TemplateResponse(
+        "my_ad_detail.html",
+        {
+            "request": request,
+            "post_id": post_id
+        }
+    )
+
 @router.post("/like/{post_id}")
 async def like_post(post_id: int, request: Request):
     user_id = request.session.get("user_id")

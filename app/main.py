@@ -12,13 +12,78 @@ from fastapi import Depends
 from app. help_router import router as help_router
 from app.favorite import favorite_router
 from app.admin.router import router as admin_router
+from starlette.middleware.base import BaseHTTPMiddleware
 
 app = FastAPI()
 
+# ========== MIDDLEWARE: Проверка авторизации ==========
+# ТАРТИБИ БАРЪАКС: AuthMiddleware аввал илова мешавад, аммо баъд иҷро мешавад
+
+class AuthMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        path = request.url.path
+        method = request.method
+        user_id = request.session.get("user_id")
+
+        # Роҳҳои кушода (бе логин) - ХОНДАН
+        public_paths = [
+            "/",           # Асосӣ
+            "/feed",       # Лента
+            "/login", 
+            "/register",
+            "/api/post/",  # API эълонҳо (хондан)
+            "/post/",      # Саҳифаи эълони якка
+            "/static/",    # Файлҳои статик
+            "/uploads/",   # Аксҳо
+            "/auth/send_code",  # Фиристодани код
+            "/auth/login",      # Логин
+            "/auth/feed-data",  # Данные ленты
+        ]
+
+        # Санҷед, ки оё роҳ кушода аст
+        is_public = any(path.startswith(p) for p in public_paths)
+
+        # Саҳифаҳои эҷоди эълон (танҳо бо логин)
+        protected_paths = [
+            "/auth/add",
+            "/auth/add2", 
+            "/auth/add3",
+            "/auth/add4",
+            "/auth/add-selection",
+            "/auth/post/",
+            "/auth/my-ads",
+            "/auth/my-ad/",
+            "/auth/settings",
+            "/auth/profile",
+            "/auth/history",
+            "/chat",
+            "/contacts",
+            "/shorts",
+            "/auth/like/",
+        ]
+
+        is_protected = any(path.startswith(p) for p in protected_paths)
+
+        # Агар кушода бошад ё корбар логин карда бошад
+        if is_public or user_id:
+            return await call_next(request)
+
+        # Агар саҳифаи махфӣ бошад ва логин набошад - ба лента
+        if is_protected:
+            return RedirectResponse("/feed")
+
+        # Боқимонда ҳама кушода
+        return await call_next(request)
+
+# Иловаи AuthMiddleware АВВАЛ (баъд иҷро мешавад)
+app.add_middleware(AuthMiddleware)
+
+# Иловаи SessionMiddleware БАЪД (аввал иҷро мешавад)
 app.add_middleware(
     SessionMiddleware,
     secret_key="SUPER_SECRET_KEY_123"
 )
+# =====================================================
 
 # Static files (CSS, JS, images)
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -53,6 +118,9 @@ def register_page(request: Request):
 
 @app.get("/setup-profile")
 def setup_profile(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return RedirectResponse("/feed")
     return templates.TemplateResponse(
         "setup-profile.html",
         {"request": request}
@@ -62,7 +130,7 @@ def setup_profile(request: Request):
 def contacts_page(request: Request):
     user_id = request.session.get("user_id")
     if not user_id:
-        return RedirectResponse("/login")
+        return RedirectResponse("/feed")
     return templates.TemplateResponse(
         "contacts.html",
         {"request": request, "user_id": user_id}
@@ -70,13 +138,16 @@ def contacts_page(request: Request):
 
 @app.get("/profile")
 def profile_page(request: Request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return RedirectResponse("/feed")
     return templates.TemplateResponse("profile.html", {"request": request})
 
 @app.get("/chat", response_class=HTMLResponse)
 def chat_page(request: Request, user: int, peer: int):
     user_id = request.session.get("user_id")
     if not user_id:
-        return RedirectResponse("/login")
+        return RedirectResponse("/feed")
 
     return templates.TemplateResponse(
         "chat.html",
@@ -102,7 +173,7 @@ def feed_page(request: Request):
 def history_page(request: Request):
     user_id = request.session.get("user_id")
     if not user_id:
-        return RedirectResponse("/login")
+        return RedirectResponse("/feed")
     return templates.TemplateResponse(
         "history.html",
         {"request": request, "user_id": user_id}
@@ -124,3 +195,4 @@ async def list_routes():
 def logout(request: Request):
     request.session.clear()
     return RedirectResponse("/login")
+

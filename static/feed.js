@@ -466,7 +466,6 @@ function renderPromotedPosts(posts, type) {
   return posts.map(post => {
     const priceText = post.price ? post.price.toLocaleString() + ' ' + (post.currency || 'TJS') : 'Договорная';
     const location = [post.city, post.district].filter(Boolean).join(' · ') || 'Локация не указана';
-    const imageUrl = post.image ? `/static/uploads/posts/${post.image}` : '/static/images/default.jpg';
 
     // Вақти боқимонда
     let timeLeft = '';
@@ -494,7 +493,6 @@ function renderPromotedPosts(posts, type) {
       <div class="${type}-card" onclick="openPost(${post.id})">
         <div class="${badgeClass}">${badgeText}</div>
         <div class="card-image-wrapper">
-          <img src="${imageUrl}" alt="${type.toUpperCase()}" onerror="this.src='/static/images/default.jpg'">
           ${timeLeft ? `<div class="time-remaining">${timeLeft}</div>` : ''}
         </div>
         <div class="card-body">
@@ -520,7 +518,7 @@ function createPostCard(post, index, likedPosts = []) {
 
   const priceText = post.price ? post.price.toLocaleString() + ' ' + (post.currency || 'TJS') : 'Договорная';
   const location = [post.city, post.district].filter(Boolean).join(', ') || 'Локация не указана';
-  const imageUrl = post.image ? `/static/uploads/posts/${post.image}` : '/static/images/default.jpg';
+  const imageUrl = post.image ? `/static/uploads/posts/${post.image}` : '/static/avatar/default.jpg';
 
   // Санҷед, ки оё ин пост лайк шудааст
   const isLiked = likedPosts.includes(post.id);
@@ -529,7 +527,7 @@ function createPostCard(post, index, likedPosts = []) {
 
   card.innerHTML = `
     <div class="card-image-wrapper">
-      <img src="${imageUrl}" loading="lazy" onerror="this.src='/static/images/default.jpg'">
+      <img src="${imageUrl}" loading="lazy" onerror="this.src='/static/avatar/default.jpg'">
       <button class="like-btn ${likedClass}" onclick="toggleLike(event, ${post.id})">
         <span class="material-icons-outlined">${likeIcon}</span>
       </button>

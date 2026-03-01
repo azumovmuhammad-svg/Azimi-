@@ -551,16 +551,16 @@ body {
 
 .nav-item.add {
   background: #4a9eff;
-  padding: 14px;
-  border-radius: 50%;
+  padding: 12px;
+  border-radius: 45%;
   color: #fff;
   opacity: 1;
   box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
-  margin-top: -20px;
+  margin-top: -18px;
 }
 
 .nav-item.add span {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .nav-item.add:active {

@@ -1,0 +1,234 @@
+/* ===== LOGIN.CSS - Мутобиқи feed.css ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #0f1a24;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  max-width: 100%;
+  min-height: 100vh;
+}
+
+/* ===== LOGO SECTION ===== */
+.logo-section {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.logo-icon {
+  width: 100px;
+  height: 100px;
+  background: #1e2c38;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border: 2px solid #2a3a48;
+}
+
+.logo-icon span {
+  font-size: 48px;
+  color: #4a9eff;
+}
+
+.logo-text {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+  color: #9bb8d0;
+  font-size: 15px;
+}
+
+/* ===== FORM SECTION ===== */
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #9bb8d0;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* ===== PHONE INPUT ===== */
+.input-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4a9eff;
+  font-size: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 18px 18px 18px 52px;
+  background: #1e2c38;
+  border: 1px solid #2a3a48;
+  border-radius: 16px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input::placeholder {
+  color: #6f8a9c;
+}
+
+.input:focus {
+  border-color: #4a9eff;
+  background: #1e2c38;
+}
+
+/* ===== BUTTON ===== */
+.button {
+  width: 100%;
+  padding: 18px;
+  background: #4a9eff;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.button:active {
+  transform: scale(0.98);
+  background: #3a8eef;
+}
+
+.button:disabled {
+  background: #2a3a48;
+  color: #6f8a9c;
+  cursor: not-allowed;
+}
+
+.button span {
+  font-size: 20px;
+}
+
+/* ===== FACE SMS BADGE ===== */
+.face-sms-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: rgba(46, 213, 115, 0.1);
+  border: 1px solid rgba(46, 213, 115, 0.3);
+  border-radius: 16px;
+  color: #2ed573;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: auto;
+}
+
+.face-sms-badge span {
+  font-size: 18px;
+}
+
+/* ===== FOOTER / TERMS ===== */
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  margin-top: auto;
+}
+
+.terms {
+  color: #6f8a9c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.terms a {
+  color: #4a9eff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-section {
+  animation: fadeInUp 0.4s ease;
+}
+
+.logo-section {
+  animation: fadeInUp 0.4s ease 0.1s both;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 360px) {
+  .logo-text {
+    font-size: 28px;
+  }
+  
+  .title {
+    font-size: 22px;
+  }
+  
+  .input, .button {
+    padding: 16px 16px 16px 48px;
+  }
+  
+  .button {
+    padding: 16px;
+  }
+}
+

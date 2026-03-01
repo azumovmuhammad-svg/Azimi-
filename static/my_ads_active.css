@@ -30,12 +30,6 @@ body {
   padding-bottom: 80px;
 }
 
-.app {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: linear-gradient(180deg, var(--bg-primary) 0%, #1a237e 50%, var(--bg-primary) 100%);
-}
 
 /* HEADER */
 .header {

@@ -109,99 +109,89 @@ function renderContent() {
   }).join('');
 }
 
+// POST - уфуқӣ
 function renderPostCard(post) {
   return `
     <div class="post-card" data-id="${post.id}" data-type="post">
       <div class="post-image-container">
         <img src="${post.image_url}" alt="${escapeHtml(post.title)}" class="post-image">
         <span class="post-badge">Объявление</span>
-        <button class="post-remove" onclick="removeFavorite('post', ${post.id})">
+        <button class="post-remove" onclick="event.stopPropagation(); removeFavorite('post', ${post.id})">
           <span class="material-icons-outlined">close</span>
         </button>
       </div>
-      <div class="post-content">
-        <div class="post-price">${formatPrice(post.price, post.currency)}</div>
-        <div class="post-title">${escapeHtml(post.title)}</div>
-        <div class="post-location">
-          <span class="material-icons-outlined">location_on</span>
-          ${post.city || 'Не указано'}${post.district ? ', ' + post.district : ''}
+      <div class="post-content" onclick="viewPost(${post.id})">
+        <div>
+          <div class="post-price">${formatPrice(post.price, post.currency)}</div>
+          <div class="post-title">${escapeHtml(post.title)}</div>
+          <div class="post-location">
+            <span class="material-icons-outlined">location_on</span>
+            ${post.city || 'Не указано'}${post.district ? ', ' + post.district : ''}
+          </div>
+          <div class="post-date">${formatDate(post.created_at)}</div>
+        </div>
+        <div class="post-stats-bottom">
+          <div class="stat-item-bottom">
+            <span class="material-icons-outlined">visibility</span>
+            <span>${post.views || 0}</span>
+          </div>
+          <div class="stat-item-bottom">
+            <span class="material-icons-outlined">call</span>
+            <span>${post.calls || 0}</span>
+          </div>
         </div>
       </div>
     </div>
   `;
 }
 
+// SHORT - уфуқӣ (ҳамон шакл)
 function renderShortCard(short) {
   return `
     <div class="short-card" data-id="${short.id}" data-type="short">
       <div class="short-preview" onclick="playShort(${short.id})">
-        <video src="${short.video_url}" muted loop playsinline></video>
-        <div class="short-overlay">
-          <button class="short-remove" onclick="event.stopPropagation(); removeFavorite('short', ${short.id})">
-            <span class="material-icons-outlined">close</span>
-          </button>
-          <div class="short-author">
+        ${short.video_url ? 
+          `<video src="${short.video_url}" muted></video>
+           <div class="short-play-icon">
+             <span class="material-icons-outlined">play_arrow</span>
+           </div>` :
+          `<img src="/static/no-video.png" alt="no video">`
+        }
+        <button class="short-remove" onclick="event.stopPropagation(); removeFavorite('short', ${short.id})">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+      <div class="short-info" onclick="playShort(${short.id})">
+        <div>
+          <div class="short-header-info">
             <img src="${short.avatar || '/static/default-avatar.png'}" class="short-avatar">
             <span class="short-username">@${escapeHtml(short.username)}</span>
           </div>
-          <div class="short-stats">
-            <span>
-              <span class="material-icons-outlined">favorite</span>
-              ${short.total_likes || 0}
-            </span>
+          <div class="short-title">${escapeHtml(short.title || 'Без названия')}</div>
+          <div class="short-desc">${escapeHtml(short.description || '').substring(0, 50)}...</div>
+        </div>
+        <div class="short-stats-bottom">
+          <div class="stat-item-bottom">
+            <span class="material-icons-outlined">favorite</span>
+            <span>${short.total_likes || 0}</span>
+          </div>
+          <div class="stat-item-bottom">
+            <span class="material-icons-outlined">visibility</span>
+            <span>${short.views || 0}</span>
           </div>
         </div>
-      </div>
-      <div class="short-info">
-        <div class="short-title">${escapeHtml(short.title || 'Без названия')}</div>
       </div>
     </div>
   `;
 }
 
-async function removeFavorite(type, id) {
-  if (!confirm('Удалить из избранного?')) return;
-
-  try {
-    const endpoint = type === 'post'
-      ? `/posts/unlike/${id}`
-      : `/shorts/unlike/${id}`;
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      credentials: 'include'
-    });
-
-    if (res.ok) {
-      // Remove from arrays
-      if (type === 'post') {
-        favoritePosts = favoritePosts.filter(p => p.id !== id);
-      } else {
-        favoriteShorts = favoriteShorts.filter(s => s.id !== id);
-      }
-
-      // Re-render
-      renderContent();
-      loadCounts();
-
-      showToast('Удалено из избранного');
-    }
-  } catch (err) {
-    console.error('Error removing:', err);
-    showToast('Ошибка');
-  }
+// Функсияҳо
+function viewPost(id) {
+  window.location.href = `/post/${id}`;
 }
 
 function playShort(id) {
   window.location.href = `/shorts?play=${id}`;
-}
-
-function goBack() {
-  window.history.back();
-}
-
-function goToFeed() {
-  window.location.href = '/feed';
 }
 
 function formatPrice(price, currency) {
@@ -210,12 +200,27 @@ function formatPrice(price, currency) {
   return `${parseInt(price).toLocaleString()} ${symbol}`;
 }
 
+function formatDate(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = now - date;
+  const days = Math.floor(diff / 86400000);
+  
+  if (days < 1) return "Сегодня";
+  if (days === 1) return "Вчера";
+  if (days < 30) return `${days} дн. назад`;
+  
+  return date.toLocaleDateString("ru-RU");
+}
+
 function escapeHtml(text) {
   if (!text) return '';
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
+
 
 function showToast(message) {
   const toast = document.createElement('div');

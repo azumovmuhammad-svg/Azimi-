@@ -127,9 +127,8 @@ function renderAds(posts) {
 
 // Функсияи нав - клик кардани пост
 function viewAd(id) {
-  window.location.href = `/post/${id}`;
+window.location.href = `/auth/my-ad/${id}`;
 }
-
 
 async function loadStats() {
   try {

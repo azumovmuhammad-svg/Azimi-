@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Мое объявление</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="/static/my_ad_detail.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <span class="material-icons-outlined">arrow_back</span>
+            </button>
+            <div class="header-title">Мое объявление</div>
+            <div style="width: 44px;"></div>
+        </div>
+
+        <!-- Image Slider -->
+        <div class="image-slider">
+            <div class="slides-container" id="slidesContainer"></div>
+            <div class="slider-counter" id="sliderCounter">0/0</div>
+            <div class="slider-dots" id="sliderDots"></div>
+        </div>
+
+        <!-- Price & Category Row -->
+        <div class="price-category-row">
+            <div class="price-section-inline">
+                <span class="price-value-inline" id="priceValue">--</span>
+                <span class="price-currency-inline" id="priceCurrency"></span>
+            </div>
+            <div class="category-badge-inline">
+                <span class="material-icons-outlined">folder</span>
+                <span id="categoryText">--</span>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <!-- Title -->
+            <div class="title-section">
+                <div class="title-label">название</div>
+                <div class="title-value" id="productTitle">--</div>
+            </div>
+
+            <!-- Location -->
+            <div class="location-section">
+                <span class="material-icons-outlined location-icon">location_on</span>
+                <div>
+                    <div class="location-label">локация</div>
+                    <div class="location-value" id="locationValue">--</div>
+                </div>
+            </div>
+
+            <!-- Seller -->
+            <div class="seller-section">
+                <div class="seller-label">продавец</div>
+                <div class="seller-value">
+                    <span class="material-icons-outlined">person</span>
+                    <span id="sellerName">--</span>
+                </div>
+            </div>
+
+            <!-- Contacts -->
+            <div class="contact-section">
+                <h3>контакты</h3>
+                <div class="contact-item">
+                    <span class="material-icons-outlined">phone</span>
+                    <span id="contactPhone">--</span>
+                </div>
+                <div class="contact-item" id="telegramItem" style="display: none; margin-top: 8px;">
+                    <span class="material-icons-outlined">send</span>
+                    <span id="contactTelegram">--</span>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider"></div>
+
+            <!-- Description -->
+            <div class="description-box">
+                <p id="descriptionText">--</p>
+            </div>
+
+            <!-- Attributes -->
+            <div class="attributes-section" id="attributesSection" style="display: none;">
+                <h3>Характеристики</h3>
+                <div id="attributesGrid"></div>
+            </div>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="bottom-actions">
+            <button class="btn-action btn-archive" onclick="archiveAd()">
+                <span class="material-icons-outlined">archive</span>
+                <span>Снять с публикации</span>
+            </button>
+            <button class="btn-action btn-edit" onclick="editAd()">
+                <span class="material-icons-outlined">edit</span>
+                <span>Изменить</span>
+            </button>
+            <button class="btn-action btn-promote" onclick="openPromoteModal()">
+                <span class="material-icons-outlined">trending_up</span>
+                <span>Продвигать</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Promote Modal -->
+    <div class="promote-modal" id="promoteModal">
+        <div class="promote-content">
+            <div class="promote-header">
+                <h3>Продвигать объявление</h3>
+                <button class="close-promote" onclick="closePromote()">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+            </div>
+            <div class="promote-options">
+                <div class="promote-option" onclick="selectPromote('vip')">
+                    <div class="promote-icon vip">VIP</div>
+                    <div class="promote-info">
+                        <div class="promote-title">VIP объявление</div>
+                        <div class="promote-desc">Выделение цветом и приоритет в ленте</div>
+                        <div class="promote-price">6 часов</div>
+                    </div>
+                </div>
+                <div class="promote-option" onclick="selectPromote('top')">
+                    <div class="promote-icon top">TOP</div>
+                    <div class="promote-info">
+                        <div class="promote-title">Поднять в топ</div>
+                        <div class="promote-desc">Объявление в начале ленты</div>
+                        <div class="promote-price">2 часа</div>
+                    </div>
+                </div>
+                <div class="promote-option" onclick="selectPromote('urgent')">
+                    <div class="promote-icon urgent">СРОЧНО</div>
+                    <div class="promote-info">
+                        <div class="promote-title">Срочная продажа</div>
+                        <div class="promote-desc">Специальный значок срочности</div>
+                        <div class="promote-price">6 часов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <span>Загрузка...</span>
+    </div>
+
+    <script src="/static/my_ad_detail.js"></script>
+</body>
+</html>
